@@ -12,7 +12,8 @@
     "require": {
         "php": ">=8.0",
         "silverstripe/framework": "^5.0",
-        "silverstripe/admin": "^2.0"
+        "silverstripe/admin": "^2.0",
+        "laravel/helpers": "^1.6"
     },
     "autoload": {
         "psr-4": {

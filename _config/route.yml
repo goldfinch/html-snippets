@@ -1,0 +1,10 @@
+---
+Name: goldfinch-components-routes
+After:
+  - '#rootroutes'
+  - '#coreroutes'
+---
+
+SilverStripe\Control\Director:
+  rules:
+    'api/component': Goldfinch\Components\Controllers\ApiComponentController
