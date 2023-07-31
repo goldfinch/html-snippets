@@ -1,5 +1,7 @@
 ---
 Name: goldfinch-components
+After:
+  - '#goldfinch-editor-config'
 ---
 
 SilverStripe\Forms\HTMLEditor\HTMLEditorField:

@@ -3,27 +3,27 @@
 namespace Goldfinch\Components\Extensions;
 
 use SilverStripe\Core\Extension;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Manifest\ModuleLoader;
 
 class HTMLEditorExtension extends Extension
 {
     public function onBeforeRenderHolder($field): void
     {
-        $config = $this->owner->config();
-
         $basedOnClass = $field->getForm()->getRecord()->getClassName();
+
+        $config = Config::inst()->get($basedOnClass);
 
         $field->setAttribute('data-based-on-class', $basedOnClass);
 
-        $allowed_components = $config->get('allowed_components');
-
-        if (isset($allowed_components[$basedOnClass]))
+        if (isset($config['allowed_components']))
         {
-            $components = $allowed_components[$basedOnClass];
+            $allowed_components = $config['allowed_components'];
 
-            if (isset($components[$field->getName()]))
+            if (isset($allowed_components[$field->getName()]))
             {
-                $fieldComponents = $components[$field->getName()];
+                // ? $fieldComponents could be used for initial load (window1)
+                $fieldComponents = $allowed_components[$field->getName()];
 
                 $enabledPlugins = $field->getEditorConfig()->getPlugins();
 
