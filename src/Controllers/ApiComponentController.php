@@ -11,13 +11,13 @@ use SilverStripe\Security\SecurityToken;
 class ApiComponentController extends Controller
 {
     private static $url_handlers = [
-        'POST components' => 'components',
-        'POST componentobjects' => 'componentobjects',
+        'POST types' => 'types',
+        'POST objects' => 'objects',
     ];
 
     private static $allowed_actions = [
-        'components',
-        'componentobjects',
+        'types',
+        'objects',
     ];
 
     protected function init()
@@ -27,7 +27,7 @@ class ApiComponentController extends Controller
         // ..
     }
 
-    public function componentobjects(HTTPRequest $request)
+    public function objects(HTTPRequest $request)
     {
         $this->authorized($request);
 
@@ -61,6 +61,31 @@ class ApiComponentController extends Controller
         return $this->httpError(401, 'Unauthorized');
     }
 
+    public function types(HTTPRequest $request)
+    {
+        $this->authorized($request);
+
+        // validation
+
+        $data = $request->postVars();
+
+        if ($components = $this->getComponents($data))
+        {
+            $list = [
+              ['text' => '-', 'value' => '']
+            ];
+
+            foreach($components as $component)
+            {
+                $list[] = ['text' => Str::of(class_basename($component))->headline(), 'value' => $component];
+            }
+
+            return json_encode($list);
+        }
+
+        return $this->httpError(401, 'Unauthorized');
+    }
+
     protected function getComponents($data)
     {
         $cfg = Config::inst()->get($data['class']);
@@ -85,31 +110,6 @@ class ApiComponentController extends Controller
         }
 
         return false;
-    }
-
-    public function components(HTTPRequest $request)
-    {
-        $this->authorized($request);
-
-        // validation
-
-        $data = $request->postVars();
-
-        if ($components = $this->getComponents($data))
-        {
-            $list = [
-              ['text' => '-', 'value' => '']
-            ];
-
-            foreach($components as $component)
-            {
-                $list[] = ['text' => Str::of(class_basename($component))->headline(), 'value' => $component];
-            }
-
-            return json_encode($list);
-        }
-
-        return $this->httpError(401, 'Unauthorized');
     }
 
     protected function authorized(HTTPRequest $request)

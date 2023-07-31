@@ -1,0 +1,7 @@
+{
+  "src/content-component.js": {
+    "file": "content-component.js",
+    "isEntry": true,
+    "src": "src/content-component.js"
+  }
+}

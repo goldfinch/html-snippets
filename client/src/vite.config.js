@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import autoprefixer from "autoprefixer";
-import * as path from 'path'
+// import * as path from 'path'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import initCfg from './app.config.js'
 
@@ -57,20 +57,20 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
 
       laravel({
         input: [
-          // 'src/bootstrap-icons.scss',
+          'src/content-component.js',
         ],
         refresh: true,
         // buildDirectory: '',
       }),
 
-      // viteStaticCopy({
-      //   targets: [
-      //     {
-      //       src: './node_modules/bootstrap-icons/font/fonts/*',
-      //       dest: '../dist/bootstrap-icons/fonts',
-      //     },
-      //   ],
-      // })
+      viteStaticCopy({
+        targets: [
+          {
+            src: './src/images/*',
+            dest: '../dist/images',
+          },
+        ],
+      })
     ],
 
     css: {
