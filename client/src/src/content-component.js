@@ -16,7 +16,7 @@ const useFetch = async function(url, formData) {
   return response.json();
 }
 
-tinymce.PluginManager.add('customplugin', (editor, url) => {
+tinymce.PluginManager.add('contentcomponent', (editor, url) => {
 
   var selectedComponent, componentTypes, componentObjects;
 
@@ -181,7 +181,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
     } catch (error) {}
   }
 
-  editor.ui.registry.addButton('customDropdown', {
+  editor.ui.registry.addButton('contentcomponent', {
     icon: 'sharpen',
     onAction: async () => {
 
@@ -201,7 +201,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
     onAction: () => editor.execCommand('cc-delete'),
   });
 
-  editor.ui.registry.addContextToolbar('customplugin', {
+  editor.ui.registry.addContextToolbar('contentcomponent', {
     predicate: (node) => editor.dom.is(node, filter),
     position: 'node',
     scope: 'node',

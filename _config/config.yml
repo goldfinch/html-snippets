@@ -1,3 +1,7 @@
 ---
 Name: goldfinch-components
 ---
+
+SilverStripe\Forms\HTMLEditor\HTMLEditorField:
+  extensions:
+    - Goldfinch\Components\Extensions\HTMLEditorExtension
