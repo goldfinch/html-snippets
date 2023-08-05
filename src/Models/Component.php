@@ -42,7 +42,9 @@ class Component extends DataObject
     //     'ComponentOf' => BaseComponent::class,
     // ];
 
-    private static $belongs_to = [];
+    private static $belongs_to = [
+        'Component' => Component::class.'.Component',
+    ];
     private static $has_many = [];
     private static $many_many = [];
     private static $many_many_extraFields = [];
