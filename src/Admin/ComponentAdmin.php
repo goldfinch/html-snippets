@@ -2,8 +2,8 @@
 
 namespace Goldfinch\Components\Admin;
 
-use Goldfinch\Components\Models\Component;
 use SilverStripe\Admin\ModelAdmin;
+use Goldfinch\Components\Models\Component;
 use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\Forms\GridField\GridFieldPrintButton;
 use SilverStripe\Forms\GridField\GridFieldExportButton;
