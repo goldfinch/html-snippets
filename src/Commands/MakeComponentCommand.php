@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace Goldfinch\Components\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Goldfinch\Taz\Services\InputOutput;
