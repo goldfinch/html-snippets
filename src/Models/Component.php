@@ -30,9 +30,9 @@ class Component extends DataObject
         'Component_Visibility' => 'Boolean',
     ];
 
-    private static $casting = [];
+    // private static $casting = [];
 
-    private static $indexes = null;
+    // private static $indexes = null;
 
     private static $defaults = [
         'Component_Visibility' => 1,
@@ -45,16 +45,16 @@ class Component extends DataObject
     private static $belongs_to = [
         'Component' => Component::class.'.Component',
     ];
-    private static $has_many = [];
-    private static $many_many = [];
-    private static $many_many_extraFields = [];
-    private static $belongs_many_many = [];
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
 
-    private static $default_sort = null;
+    // private static $default_sort = null;
 
-    private static $searchable_fields = [];
+    // private static $searchable_fields = [];
 
-    private static $field_labels = [];
+    // private static $field_labels = [];
 
     private static $summary_fields = [
         'Component_Name' => 'Component',
@@ -217,35 +217,25 @@ class Component extends DataObject
         return $fields;
     }
 
-    public function canView($member = null)
-    {
-        return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
-    }
+    // public function canView($member = null)
+    // {
+    //     return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
+    // }
 
-    public function canEdit($member = null)
-    {
-        return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
-    }
+    // public function canEdit($member = null)
+    // {
+    //     return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
+    // }
 
-    public function canDelete($member = null)
-    {
-        return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
-    }
+    // public function canDelete($member = null)
+    // {
+    //     return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
+    // }
 
-    public function canCreate($member = null, $context = [])
-    {
-        return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
-    }
-
-    public function SchemaData()
-    {
-        // Spatie\SchemaOrg\Schema
-    }
-
-    public function OpenGraph()
-    {
-        // Astrotomic\OpenGraph\OpenGraph
-    }
+    // public function canCreate($member = null, $context = [])
+    // {
+    //     return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
+    // }
 
     // public function getTitle()
     // {
