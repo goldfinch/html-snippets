@@ -15,15 +15,13 @@ class ComponentAdmin extends ModelAdmin
 
     private static $menu_title = 'HTML Components';
 
-    private static $menu_icon_class = 'goldfinch-component-icon';
-
     private static $managed_models = [
         Component::class,
     ];
 
     private static $menu_priority = 40;
 
-    private static $menu_icon_class = 'bi-stack';
+    private static $menu_icon_class = 'goldfinch-component-icon';
 
     public $showImportForm = true;
 
