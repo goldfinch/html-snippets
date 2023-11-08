@@ -1,6 +1,6 @@
 <?php
 
-namespace Goldfinch\Components\Shortcodes;
+namespace Goldfinch\HTMLComponents\Shortcodes;
 
 use Embed\Http\NetworkException;
 use Embed\Http\RequestException;

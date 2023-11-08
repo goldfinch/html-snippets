@@ -3,12 +3,15 @@
 namespace Goldfinch\HTMLComponents\Admin;
 
 use SilverStripe\Admin\ModelAdmin;
+use JonoM\SomeConfig\SomeConfigAdmin;
 use SilverStripe\Forms\GridField\GridFieldConfig;
 use Goldfinch\HTMLComponents\Models\HTMLComponent;
 use Goldfinch\HTMLComponents\Config\HTMLComponentConfig;
 
 class HTMLComponentsAdmin extends ModelAdmin
 {
+    use SomeConfigAdmin;
+
     private static $url_segment = 'html-components';
     private static $menu_title = 'HTML Components';
     private static $menu_icon_class = 'goldfinch-component-icon';

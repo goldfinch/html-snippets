@@ -1,6 +1,6 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Configs;
+namespace Goldfinch\HTMLComponents\Config;
 
 use JonoM\SomeConfig\SomeConfig;
 use SilverStripe\ORM\DataObject;
