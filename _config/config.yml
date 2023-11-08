@@ -7,3 +7,7 @@ After:
 SilverStripe\Forms\HTMLEditor\HTMLEditorField:
   extensions:
     - Goldfinch\Components\Extensions\HTMLEditorExtension
+
+SilverStripe\Admin\LeftAndMain:
+  extensions:
+    - Goldfinch\Components\Extensions\ComponentsAssetsExtension

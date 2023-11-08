@@ -58,6 +58,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       laravel({
         input: [
           'src/content-component.js',
+          'src/sass/component.scss',
         ],
         refresh: true,
         // buildDirectory: '',

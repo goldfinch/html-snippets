@@ -13,7 +13,9 @@ class ComponentAdmin extends ModelAdmin
 {
     private static $url_segment = 'components';
 
-    private static $menu_title = 'Components';
+    private static $menu_title = 'HTML Components';
+
+    private static $menu_icon_class = 'goldfinch-component-icon';
 
     private static $managed_models = [
         Component::class,

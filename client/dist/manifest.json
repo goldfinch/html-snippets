@@ -3,5 +3,14 @@
     "file": "content-component.js",
     "isEntry": true,
     "src": "src/content-component.js"
+  },
+  "src/images/component.svg": {
+    "file": "images/component.svg",
+    "src": "src/images/component.svg"
+  },
+  "src/sass/component.scss": {
+    "file": "component.css",
+    "isEntry": true,
+    "src": "src/sass/component.scss"
   }
 }
