@@ -1,116 +1,57 @@
 <?php
 
-namespace Goldfinch\Components\Models;
+namespace Goldfinch\HTMLComponents\Models;
 
 use Illuminate\Support\Str;
-use SilverStripe\ORM\ArrayList;
-use SilverStripe\Core\ClassInfo;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Core\ClassInfo;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
-use SilverStripe\Security\Permission;
 
-class Component extends DataObject
+class HTMLComponent extends DataObject
 {
-    private static $singular_name = null;
-
-    private static $plural_name = null;
-
-    private static $table_name = 'Component';
-
-    // private static $cascade_deletes = [
-    //     'ComponentOf',
-    // ];
-
-    private static $cascade_duplicates = [];
+    private static $table_name = 'HTMLComponent';
+    private static $singular_name = 'html component';
+    private static $plural_name = 'html components';
 
     private static $db = [
         'Component_Name' => 'Varchar',
         'Component_Visibility' => 'Boolean',
     ];
 
-    // private static $casting = [];
-
-    // private static $indexes = null;
-
-    private static $defaults = [
-        'Component_Visibility' => 1,
-    ];
-
-    // private static $has_one = [
-    //     'ComponentOf' => BaseComponent::class,
-    // ];
-
-    private static $belongs_to = [
-        'Component' => Component::class.'.Component',
-    ];
-    // private static $has_many = [];
-    // private static $many_many = [];
-    // private static $many_many_extraFields = [];
-    // private static $belongs_many_many = [];
-
-    // private static $default_sort = null;
-
-    // private static $searchable_fields = [];
-
-    // private static $field_labels = [];
-
     private static $summary_fields = [
         'Component_Name' => 'Component',
         'ComponentType' => 'Type',
     ];
 
-    public function validate()
-    {
-        $result = parent::validate();
+    private static $defaults = [
+        'Component_Visibility' => 1,
+    ];
 
-        // $result->addError('Error message');
+    private static $belongs_to = [
+        'Component' => HTMLComponent::class.'.Component',
+    ];
 
-        return $result;
-    }
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
+    // private static $default_sort = null;
+    // private static $indexes = null;
+    // private static $owns = [];
+    // private static $casting = [];
 
-    // public function write($showDebug = false, $forceInsert = false, $forceWrite = false, $writeComponents = false)
-    // {
-    //     dd($writeComponents);
+    // private static $field_labels = [];
+    // private static $searchable_fields = [];
 
-    //     return parent::write($showDebug, $forceInsert, $forceWrite, $writeComponents);
-    // }
+    // private static $cascade_deletes = [];
+    // private static $cascade_duplicates = [];
 
-    public function onBeforeWrite()
-    {
-        parent::onBeforeWrite();
-        // dd($this->toMap());
-        // $this->ClassName = $this->Componenty_Type;
-        // dd($this->setFieldValue());
-        // dd($this->toMap());
-        // dd($this->getChangedFields());
-
-                  // $component = $this->ComponentOf();
-
-                  // foreach ($this->getChangedFields() as $title => $data)
-                  // {
-                  //     if ($component->hasField($title))
-                  //     {
-                  //         $component->$title = $data['after'];
-                  //     }
-                  // }
-
-                  // $component->write();
-
-                  // if (empty(trim($this->Component_Name)))
-                  // {
-                  //     $this->Component_Name = $this->ComponentType() . ' ['.$this->ID.']';
-                  // }
-
-    }
-
-    public function onBeforeDelete()
-    {
-        // ..
-
-        parent::onBeforeDelete();
-    }
+    // * goldfinch/helpers
+    // private static $field_descriptions = [];
+    // private static $required_fields = [];
 
     public function getCMSFields()
     {
@@ -217,6 +158,34 @@ class Component extends DataObject
         return $fields;
     }
 
+    public function ComponentType()
+    {
+        return Str::headline(last(explode('\\', $this->ClassName)));
+    }
+
+    // public function validate()
+    // {
+    //     $result = parent::validate();
+
+    //     // $result->addError('Error message');
+
+    //     return $result;
+    // }
+
+    // public function onBeforeWrite()
+    // {
+    //     // ..
+
+    //     parent::onBeforeWrite();
+    // }
+
+    // public function onBeforeDelete()
+    // {
+    //     // ..
+
+    //     parent::onBeforeDelete();
+    // }
+
     // public function canView($member = null)
     // {
     //     return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
@@ -236,21 +205,4 @@ class Component extends DataObject
     // {
     //     return Permission::check('CMS_ACCESS_Company\Website\MyAdmin', 'any', $member);
     // }
-
-    // public function getTitle()
-    // {
-    //     $component = $this->ComponentOf();
-
-    //     if ($component->hasField('Title'))
-    //     {
-    //         return $component->Title;
-    //     }
-
-    //     return '';
-    // }
-
-    public function ComponentType()
-    {
-        return Str::headline(last(explode('\\', $this->ClassName)));
-    }
 }

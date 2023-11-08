@@ -24,7 +24,7 @@ use SilverStripe\View\Embed\EmbedContainer;
  * in the HTML Editor field.
  * Provides the html needed for the frontend and the editor field itself.
  */
-class ContentblockShortcode implements ShortcodeHandler
+class HTMLComponentBlockShortcode implements ShortcodeHandler
 {
     use Configurable;
 
@@ -35,7 +35,7 @@ class ContentblockShortcode implements ShortcodeHandler
      */
     public static function get_shortcodes()
     {
-        return ['contentblock'];
+        return ['htmlcomponentblock'];
     }
 
     /**

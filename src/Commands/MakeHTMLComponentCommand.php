@@ -1,26 +1,26 @@
 <?php
 
-namespace Goldfinch\Components\Commands;
+namespace Goldfinch\HTMLComponents\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Goldfinch\Taz\Services\InputOutput;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 
-#[AsCommand(name: 'make:component')]
-class MakeComponentCommand extends GeneratorCommand
+#[AsCommand(name: 'make:html-component')]
+class MakeHTMLComponentCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'make:component';
+    protected static $defaultName = 'make:html-component';
 
-    protected $description = 'Create new component';
+    protected $description = 'Create new HTML Component';
 
-    protected $path = 'app/src/Components';
+    protected $path = 'app/src/HTMLComponents';
 
-    protected $type = 'component';
+    protected $type = 'html-component';
 
-    protected $stub = './stubs/component.stub';
+    protected $stub = './stubs/html-component.stub';
 
-    protected $prefix = 'Component';
+    protected $prefix = 'HTMLComponent';
 
     protected function execute($input, $output): int
     {
@@ -30,7 +30,7 @@ class MakeComponentCommand extends GeneratorCommand
 
         // Nest template
 
-        $command = $this->getApplication()->find('make:component-template');
+        $command = $this->getApplication()->find('make:html-component-template');
 
         $arguments = [
             'name' => $nameInput,

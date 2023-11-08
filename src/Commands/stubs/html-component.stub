@@ -1,0 +1,68 @@
+<?php
+{{ namespace }}
+
+use Goldfinch\HTMLComponents\Models\HTMLComponent;
+
+class {{ class }} extends HTMLComponent
+{
+    private static $table_name = '{{ class }}';
+    private static $singular_name = '{{ class_singular_lowercase }}';
+    private static $plural_name = '{{ class_plural_lowercase }}';
+
+    private static $db = [];
+
+    // private static $has_one = [];
+    // private static $belongs_to = [];
+    // private static $has_many = [];
+    // private static $many_many = [];
+    // private static $many_many_extraFields = [];
+    // private static $belongs_many_many = [];
+    // private static $default_sort = null;
+    // private static $indexes = null;
+    // private static $owns = [];
+    // private static $casting = [];
+    // private static $defaults = [];
+
+    // private static $summary_fields = [];
+    // private static $field_labels = [];
+    // private static $searchable_fields = [];
+
+    // private static $cascade_deletes = [];
+    // private static $cascade_duplicates = [];
+
+    // * goldfinch/helpers
+    // private static $field_descriptions = [];
+    // private static $required_fields = [];
+
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+
+        // ..
+
+        return $fields;
+    }
+
+    // public function validate()
+    // {
+    //     $result = parent::validate();
+
+    //     // $result->addError('Error message');
+
+    //     return $result;
+    // }
+
+    // public function onBeforeWrite()
+    // {
+    //     // ..
+
+    //     parent::onBeforeWrite();
+    // }
+
+    // public function onBeforeDelete()
+    // {
+    //     // ..
+
+    //     parent::onBeforeDelete();
+    // }
+}

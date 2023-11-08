@@ -1,5 +1,5 @@
 {
-    "name": "goldfinch/components",
+    "name": "goldfinch/html-components",
     "description": "",
     "type": "silverstripe-vendormodule",
     "keywords": [
@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Goldfinch\\Components\\": "src/"
+            "Goldfinch\\HTMLComponents\\": "src/"
         }
     },
     "extra": {

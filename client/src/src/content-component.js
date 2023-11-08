@@ -16,7 +16,7 @@ const useFetch = async function(url, formData) {
   return response.json();
 }
 
-tinymce.PluginManager.add('contentcomponent', (editor, url) => {
+tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
 
   var selectedComponent, componentTypes, componentObjects;
 
@@ -128,7 +128,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
         var ctKey = Object.keys(componentTypes).find(x => componentTypes[x].value === selectedComponent);
         var coKey = Object.keys(componentObjects).find(x => componentObjects[x].value === data.component);
 
-        tinymce.activeEditor.execCommand('mceInsertContent', false, `[contentblock class="gf-component" data-class="${selectedComponent}" data-id="${data.component}" data-bn="${componentTypes[ctKey].text}" data-n="${componentObjects[coKey].text}"].[/contentblock]`);
+        tinymce.activeEditor.execCommand('mceInsertContent', false, `[htmlcomponentblock class="gf-component" data-class="${selectedComponent}" data-id="${data.component}" data-bn="${componentTypes[ctKey].text}" data-n="${componentObjects[coKey].text}"].[/htmlcomponentblock]`);
 
         dialogApi.close();
       }
@@ -142,7 +142,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
     formData.append('class', editor.targetElm.getAttribute('data-based-on-class'))
 
     try {
-      const data = await useFetch('/api/component/types', formData)
+      const data = await useFetch('/api-html-components/component/types', formData)
 
       var cfg = window1;
       cfg.body.items[1].enabled = true;
@@ -167,7 +167,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
     formData.append('component', selectedComponent)
 
     try {
-      const data = await useFetch('/api/component/objects', formData)
+      const data = await useFetch('/api-html-components/component/objects', formData)
 
       componentObjects = data;
 
@@ -181,7 +181,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
     } catch (error) {}
   }
 
-  editor.ui.registry.addButton('contentcomponent', {
+  editor.ui.registry.addButton('htmlcomponents', {
     icon: 'sharpen',
     onAction: async () => {
 
@@ -193,7 +193,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
     }
   })
 
-  const filter = 'div[data-shortcode="contentblock"]'
+  const filter = 'div[data-shortcode="htmlcomponentblock"]'
 
   editor.ui.registry.addButton('ccdelete', {
     tooltip: 'Delete content block',
@@ -201,7 +201,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
     onAction: () => editor.execCommand('cc-delete'),
   });
 
-  editor.ui.registry.addContextToolbar('contentcomponent', {
+  editor.ui.registry.addContextToolbar('htmlcomponents', {
     predicate: (node) => editor.dom.is(node, filter),
     position: 'node',
     scope: 'node',
@@ -233,7 +233,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
         });
 
         const shortCode = ShortcodeSerialiser.serialise({
-          name: 'contentblock',
+          name: 'htmlcomponentblock',
           properties,
           wrapped: true,
           content: '', //embed.html(),
@@ -249,7 +249,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
 
     let content = o.content;
     // Transform [embed] tag
-    let match = ShortcodeSerialiser.match('contentblock', true, content);
+    let match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
 
     while (match) {
       const data = match.properties;
@@ -260,14 +260,14 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
         .attr('data-class', data['data-class'])
         .attr('data-n', data['data-n'])
         .attr('data-bn', data['data-bn'])
-        .attr('data-shortcode', 'contentblock')
+        .attr('data-shortcode', 'htmlcomponentblock')
         .addClass(data.class)
 
-      base.html('<img src="/_resources/vendor/goldfinch/components/client/dist/images/component.svg" width="">');
+      base.html('<img src="/_resources/vendor/goldfinch/html-components/client/dist/images/component.svg" width="">');
 
       content = content.replace(match.original, (jQuery('<div/>').append(base).html()));
 
-      match = ShortcodeSerialiser.match('contentblock', true, content);
+      match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
     }
 
     o.content = content;
@@ -276,7 +276,7 @@ tinymce.PluginManager.add('contentcomponent', (editor, url) => {
   return {
     getMetadata: () => ({
       name: 'Goldfinch Components',
-      url: 'https://github.com/goldfinch/components'
+      url: 'https://github.com/goldfinch/html-components'
     })
   }
 });

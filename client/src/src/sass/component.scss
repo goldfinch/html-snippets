@@ -1,5 +1,22 @@
 .goldfinch-component-icon {
-  &:before {
-    background-image: url('../images/component.svg');
+  &:after {
+    width: 24px;
+    height: 24px;
+    content: '';
+    background-color: var(--bs-cyan);
+    mask-image: url(./images/component.svg);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: cover;
+    display: inline-block;
+    position: relative;
+    top: -1px;
+    left: -5px;
+  }
+}
+
+.cms-menu__list li.current a > .goldfinch-component-icon {
+  &:after {
+    background-color: #fff;
   }
 }

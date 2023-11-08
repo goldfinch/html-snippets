@@ -309,7 +309,7 @@ const page1Config = {
           var k1 = Object.keys(componentTypes).find(x => componentTypes[x].value === savedComponent);
           var k2 = Object.keys(componentObjects).find(x => componentObjects[x].value === data.component);
 
-          tinymce.activeEditor.execCommand('mceInsertContent', false, `[contentblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/contentblock]`);
+          tinymce.activeEditor.execCommand('mceInsertContent', false, `[htmlcomponentblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/htmlcomponentblock]`);
 
           dialogApi.close();
         }
@@ -331,7 +331,7 @@ const page1Config = {
 
 
           try {
-            const response = await fetch('/api/component/components', {
+            const response = await fetch('/api-html-components/component/components', {
               method: 'POST',
               headers: {
                 'X-CSRF-TOKEN': window.ss.config.SecurityID
@@ -388,7 +388,7 @@ const page1Config = {
           formData.append('component', savedComponent)
 
           try {
-            const response = await fetch('/api/component/componentobjects', {
+            const response = await fetch('/api-html-components/component/componentobjects', {
               method: 'POST',
               headers: {
                 'X-CSRF-TOKEN': window.ss.config.SecurityID
@@ -473,7 +473,7 @@ const page1Config = {
       }
     })
 
-    const filter = 'div[data-shortcode="contentblock"]'
+    const filter = 'div[data-shortcode="htmlcomponentblock"]'
 
       editor.ui.registry.addButton('gfcdelete', {
         tooltip: 'Delete content block',
@@ -530,7 +530,7 @@ const page1Config = {
             console.log('properties', properties)
 
             const shortCode = ShortcodeSerialiser.serialise({
-              name: 'contentblock',
+              name: 'htmlcomponentblock',
               properties,
               wrapped: true,
               content: '', //embed.html(),
@@ -552,7 +552,7 @@ const page1Config = {
         let content = o.content;
         console.log('before set content', content)
         // Transform [embed] tag
-        let match = ShortcodeSerialiser.match('contentblock', true, content);
+        let match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
         while (match) {
           const data = match.properties;
           console.log('data', data, match, data['data-id'])
@@ -564,9 +564,9 @@ const page1Config = {
             .attr('data-class', data['data-class'])
             .attr('data-n', data['data-n'])
             .attr('data-bn', data['data-bn'])
-            .attr('data-shortcode', 'contentblock')
+            .attr('data-shortcode', 'htmlcomponentblock')
             .addClass(data.class)
-            // .addClass('ss-htmleditorfield-file contentblock');
+            // .addClass('ss-htmleditorfield-file htmlcomponentblock');
 
           // Add placeholder
           // const placeholder = jQuery('<img />')
@@ -597,7 +597,7 @@ const page1Config = {
           content = content.replace(match.original, (jQuery('<div/>').append(base).html()));
 
           // Search for next match
-          match = ShortcodeSerialiser.match('contentblock', true, content);
+          match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
         }
 
         // eslint-disable-next-line no-param-reassign

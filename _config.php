@@ -1,6 +1,6 @@
 <?php
 
 use SilverStripe\View\Parsers\ShortcodeParser;
-use Goldfinch\Components\Shortcodes\ContentblockShortcode;
+use Goldfinch\HTMLComponents\Shortcodes\HTMLComponentBlockShortcode;
 
-ShortcodeParser::get('default')->register('contentblock', [ContentblockShortcode::class, 'handle_shortcode']);
+ShortcodeParser::get('default')->register('htmlcomponentblock', [HTMLComponentBlockShortcode::class, 'handle_shortcode']);
