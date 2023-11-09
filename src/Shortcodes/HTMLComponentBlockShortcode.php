@@ -138,7 +138,14 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
 
         $component = $arguments['data-class']::get_by_id($arguments['data-id']);
 
-        return $component->renderWith('Components/' . class_basename($component));
+        if ($component->Component_Visibility)
+        {
+            return $component->renderWith('Components/HTML/' . class_basename($component));
+        }
+        else
+        {
+            return;
+        }
     }
 
     public static function embeddableToHtml(Embeddable $embeddable, array $arguments): string

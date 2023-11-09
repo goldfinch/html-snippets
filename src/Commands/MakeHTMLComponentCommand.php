@@ -14,13 +14,13 @@ class MakeHTMLComponentCommand extends GeneratorCommand
 
     protected $description = 'Create new HTML Component';
 
-    protected $path = 'app/src/HTMLComponents';
+    protected $path = 'app/src/Components';
 
     protected $type = 'html-component';
 
     protected $stub = './stubs/html-component.stub';
 
-    protected $prefix = 'HTMLComponent';
+    protected $prefix = 'Component';
 
     protected function execute($input, $output): int
     {

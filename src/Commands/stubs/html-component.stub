@@ -1,9 +1,8 @@
 <?php
 {{ namespace }}
-
 use Goldfinch\HTMLComponents\Models\HTMLComponent;
 
-class {{ class }} extends HTMLComponent
+class {{ class }}Component extends HTMLComponent
 {
     private static $table_name = '{{ class }}';
     private static $singular_name = '{{ class_singular_lowercase }}';

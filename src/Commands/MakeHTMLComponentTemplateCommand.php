@@ -13,11 +13,15 @@ class MakeHTMLComponentTemplateCommand extends GeneratorCommand
 
     protected $description = 'Create new HTML Component template';
 
-    protected $path = 'themes/main/templates/Components';
+    protected $path = 'themes/main/templates/Components/HTML';
 
     protected $type = 'html-component-template';
 
-    protected $stub = './stubs/component-template.stub';
+    protected $stub = './stubs/html-component-template.stub';
+
+    protected $prefix = 'Component';
+
+    protected $extension = '.ss';
 
     protected function execute($input, $output): int
     {

@@ -7,4 +7,4 @@ After:
 
 SilverStripe\Control\Director:
   rules:
-    'api-html-components/component': Goldfinch\Components\Controllers\HTMLComponentApiController
+    'api-html-components/component': Goldfinch\HTMLComponents\Controllers\HTMLComponentApiController
