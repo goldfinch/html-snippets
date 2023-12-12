@@ -1,0 +1,24 @@
+.gf-component {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #fefefe;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: #6487b6;
+  border: 2px dashed #6487b6;
+
+  &:after {
+    content: attr(data-bn) " • " attr(data-n) " • " attr(data-id);
+    display: block;
+    width: 100%;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+.gf-component img {
+  background: unset !important;
+}

@@ -8,5 +8,10 @@
     "file": "component.css",
     "isEntry": true,
     "src": "src/sass/component.scss"
+  },
+  "src/sass/tinymce.scss": {
+    "file": "tinymce.css",
+    "isEntry": true,
+    "src": "src/sass/tinymce.scss"
   }
 }

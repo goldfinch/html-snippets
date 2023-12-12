@@ -59,6 +59,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
         input: [
           'src/content-component.js',
           'src/sass/component.scss',
+          'src/sass/tinymce.scss',
         ],
         refresh: true,
         // buildDirectory: '',
