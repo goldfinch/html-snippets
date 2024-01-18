@@ -5,7 +5,7 @@ namespace Goldfinch\HTMLComponents\Admin;
 use SilverStripe\Admin\ModelAdmin;
 use JonoM\SomeConfig\SomeConfigAdmin;
 use Goldfinch\HTMLComponents\Models\HTMLComponent;
-use Goldfinch\HTMLComponents\Config\HTMLComponentConfig;
+use Goldfinch\HTMLComponents\Configs\HTMLComponentConfig;
 
 class HTMLComponentsAdmin extends ModelAdmin
 {
