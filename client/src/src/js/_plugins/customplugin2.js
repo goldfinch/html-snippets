@@ -3,7 +3,7 @@
 // eslint-disable-next-line max-len
 const stringifyRegex = (regexp) => (regexp.toString().slice(1, -1));
 const SHORTCODE_ATTRS = stringifyRegex(
-  /((?:[,\s]+(?:[a-z0-9\-_]+)=(?:(?:[a-z0-9\-_]+)|(?:\d+\.\d+)|(?:'[^']*')|(?:"[^"]*")))*)/
+  /((?:[,\s]+(?:[a-z0-9\-_]+)=(?:(?:[a-z0-9\-_]+)|(?:\d+\.\d+)|(?:'[^']*')|(?:"[^"]*")))*)/,
 );
 // Used to extract individual items from above regexp
 // Each item matches[1] is key, and matches[2] || matches[3] || matches[4] || matches[5] is value
@@ -138,325 +138,298 @@ const sanitiseShortCodeProperties = (rawProperties) => {
   const sanitise = createHTMLSanitiser();
   return Object.entries(rawProperties).reduce((props, [name, value]) => ({
     ...props,
-    [name]: sanitise(value)
+    [name]: sanitise(value),
   }), {});
 };
 
-
-
 // (function() {
-  tinymce.PluginManager.add('customplugin', (editor, url) => {
-    // add plugin code here
+tinymce.PluginManager.add('customplugin', (editor, url) => {
+  // add plugin code here
 
-    // editor.ui.registry.addButton('customInsertButton', {
-    //   text: 'My Button',
-    //   onAction: (_) => editor.insertContent(`&nbsp;<strong>It's my button!</strong>&nbsp;`)
-    // });
+  // editor.ui.registry.addButton('customInsertButton', {
+  //   text: 'My Button',
+  //   onAction: (_) => editor.insertContent(`&nbsp;<strong>It's my button!</strong>&nbsp;`)
+  // });
 
-    // const toTimeHtml = (date) => `<time datetime="${date.toString()}">${date.toDateString()}</time>`;
+  // const toTimeHtml = (date) => `<time datetime="${date.toString()}">${date.toDateString()}</time>`;
 
-    // editor.ui.registry.addButton('customDateButton', {
-    //   icon: 'insert-time',
-    //   tooltip: 'Insert Current Date',
-    //   enabled: false,
-    //   onAction: (_) => editor.insertContent(toTimeHtml(new Date())),
-    //   onSetup: (buttonApi) => {
-    //     const editorEventCallback = (eventApi) => {
-    //       buttonApi.setEnabled(eventApi.element.nodeName.toLowerCase() !== 'time');
-    //     };
-    //     editor.on('NodeChange', editorEventCallback);
+  // editor.ui.registry.addButton('customDateButton', {
+  //   icon: 'insert-time',
+  //   tooltip: 'Insert Current Date',
+  //   enabled: false,
+  //   onAction: (_) => editor.insertContent(toTimeHtml(new Date())),
+  //   onSetup: (buttonApi) => {
+  //     const editorEventCallback = (eventApi) => {
+  //       buttonApi.setEnabled(eventApi.element.nodeName.toLowerCase() !== 'time');
+  //     };
+  //     editor.on('NodeChange', editorEventCallback);
 
-    //     /* onSetup should always return the unbind handlers */
-    //     return () => editor.off('NodeChange', editorEventCallback);
-    //   }
-    // });
+  //     /* onSetup should always return the unbind handlers */
+  //     return () => editor.off('NodeChange', editorEventCallback);
+  //   }
+  // });
 
+  editor.addCommand('gfc-delete', () => {
+    const node = editor.selection.getNode();
+    // selecting the div correctly
+    if (editor.dom.is(node, filter)) {
+      node.remove();
+      // selecting the image inside the div
+    } else if (editor.dom.is(node.parentNode, filter)) {
+      node.parentNode.remove();
+      // anything else
+    } else {
+      // eslint-disable-next-line no-console
+      console.error({ error: 'Unexpected selection - expected embed', selectedNode: node });
+    }
+  });
 
+  const toggleState = false;
 
-    editor.addCommand('gfc-delete', () => {
-        const node = editor.selection.getNode();
-        // selecting the div correctly
-        if (editor.dom.is(node, filter)) {
-          node.remove();
-        // selecting the image inside the div
-        } else if (editor.dom.is(node.parentNode, filter)) {
-          node.parentNode.remove();
-        // anything else
-        } else {
-          // eslint-disable-next-line no-console
-          console.error({ error: 'Unexpected selection - expected embed', selectedNode: node });
-        }
-      });
+  console.log('INit');
 
-    var toggleState = false;
-
-
-
-console.log('INit')
-
-const page1Config = {
+  const page1Config = {
   // console.log('cc',window.goldfinch_component)
 
-  title: 'Components',
-  body: {
-    type: 'panel',
-    name: 'superpanel',
-    items: [{
-      type: 'htmlpanel',
-      html: '<p>Please, select component you would like to insert</p><p></p>'
-    },
+    title: 'Components',
+    body: {
+      type: 'panel',
+      name: 'superpanel',
+      items: [{
+        type: 'htmlpanel',
+        html: '<p>Please, select component you would like to insert</p><p></p>',
+      },
 
-    {
-  type: 'listbox', // component type
-  name: 'component', // identifier
-  label: 'Component',
-  enabled: false, // enabled state
-  items: [
-    { text: '-', value: '-' },
-  ]
-}]
-  },
-  initialData: {
+      {
+        type: 'listbox', // component type
+        name: 'component', // identifier
+        label: 'Component',
+        enabled: false, // enabled state
+        items: [
+          { text: '-', value: '-' },
+        ],
+      }],
+    },
+    initialData: {
     // type: '1'
     // type: null, // xhrLoadType()
-  },
-  buttons: [
-    {
-      type: 'custom',
-      name: 'uniquename',
-      text: 'Next',
-      enabled: false
-    }
-  ],
-  onChange: (dialogApi, details) => {console.log('Changed')
-  // dialogApi.block('loading...');
-    const data = dialogApi.getData();
-    /* Example of enabling and disabling a button, based on the checkbox state. */
-    dialogApi.setEnabled('uniquename', data.component);
-  },
-  onAction: async (dialogApi, details) => {console.log('Action', details)
-    if (details.name === 'uniquename') {
+    },
+    buttons: [
+      {
+        type: 'custom',
+        name: 'uniquename',
+        text: 'Next',
+        enabled: false,
+      },
+    ],
+    onChange: (dialogApi, details) => {
+      console.log('Changed');
+      // dialogApi.block('loading...');
+      const data = dialogApi.getData();
+      /* Example of enabling and disabling a button, based on the checkbox state. */
+      dialogApi.setEnabled('uniquename', data.component);
+    },
+    onAction: async (dialogApi, details) => {
+      console.log('Action', details);
+      if (details.name === 'uniquename') {
+        dialogApi.block('Loading ...');
 
-      dialogApi.block('Loading ...')
+        //   dialog.setData({
+        //     type: 'Open 2'
+        // })
 
-      //   dialog.setData({
-      //     type: 'Open 2'
+        await xhrLoadType2(dialogApi);
+      }
+    },
+  };
+  const page2Config = {
+    title: 'Redial Demo - Page 2',
+    body: {
+      type: 'panel',
+      items: [{
+        type: 'htmlpanel',
+        html: '<p>Please, select</p><p></p>',
+      },
+
+      {
+        type: 'listbox', // component type
+        name: 'component', // identifier
+        label: 'Component',
+        enabled: false, // enabled state
+        items: [
+          { text: '-', value: '-' },
+        ],
+      }],
+    },
+    buttons: [
+      {
+        type: 'custom',
+        name: 'doesnothing',
+        text: 'Back',
+        enabled: true,
+      },
+      {
+        type: 'custom',
+        name: 'lastpage',
+        text: 'Done',
+        enabled: true,
+      },
+    ],
+    initialData: {
+      // component: ''
+    },
+    onAction: async (dialogApi, details) => {
+      if (details.name === 'doesnothing') {
+        console.log('back');
+        dialogApi.block('Loading..');
+        await xhrLoadType(dialogApi);
+      } else if (details.name === 'lastpage') {
+        const data = dialogApi.getData();
+
+        const result = `You chose wisely: ${data.component}`;
+        console.log('>>>', details, data, savedComponent);
+
+        console.log('123', componentTypes, componentObjects);
+
+        // tinymce.activeEditor.execCommand('mceInsertContent', false, `<gf-component class="gf-component" data-class="${savedComponent}" data-id="${data.component}">[${result}]</gf-component>`);
+
+        const k1 = Object.keys(componentTypes).find((x) => componentTypes[x].value === savedComponent);
+        const k2 = Object.keys(componentObjects).find((x) => componentObjects[x].value === data.component);
+
+        tinymce.activeEditor.execCommand('mceInsertContent', false, `[htmlcomponentblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/htmlcomponentblock]`);
+
+        dialogApi.close();
+      }
+    },
+  };
+
+  let savedComponent;
+  let componentTypes;
+  let componentObjects;
+
+  const xhrLoadType = async (dialog) => {
+    const formData = new FormData();
+    formData.append('name', editor.targetElm.getAttribute('name'));
+    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
+    console.log(formData);
+
+    try {
+      const response = await fetch('/api-html-components/component/components', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': window.ss.config.SecurityID,
+        },
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      // console.log(dialog.getData('type'))
+      // dialog.setData({sfPreview: 'ssss'})
+      // dialog.setData('type', {
+      //   enabled: true,
+      //   items: [
+      //     { text: 'One', value: '1' },
+      //     { text: 'Two', value: '2' },
+      //     { text: 'Submenu', items: [
+      //       { text: 'Three', value: '3' }
+      //     ]}
+      //   ]
       // })
 
-      await xhrLoadType2(dialogApi);
+      const cfg = page1Config;
+      cfg.body.items[1].enabled = true;
+      cfg.body.items[1].items = data;
 
+      componentTypes = data;
 
-
+      console.log('cfg', cfg);
+      dialog.redial(cfg);
+      // console.log('editor', editor.targetElm.getAttribute('name'));
+      // console.log('class', editor.targetElm.getAttribute('data-based-on-class'))
+      // console.dir(editor);
+      // console.log('entwune', jQuery(`#${editor.id}`).entwine('ss'))
+      dialog.unblock();
+    } catch (error) {
+      // console.error(error);
     }
-  }
-};
-        const page2Config = {
-      title: 'Redial Demo - Page 2',
-      body: {
-        type: 'panel',
-        items: [{
-      type: 'htmlpanel',
-      html: '<p>Please, select</p><p></p>'
-    },
+  };
 
-    {
-  type: 'listbox', // component type
-  name: 'component', // identifier
-  label: 'Component',
-  enabled: false, // enabled state
-  items: [
-    { text: '-', value: '-' },
-  ]
-}]
-      },
-      buttons: [
-        {
-          type: 'custom',
-          name: 'doesnothing',
-          text: 'Back',
-          enabled: true
+  const xhrLoadType2 = async (dialog) => {
+    savedComponent = dialog.getData().component;
+    console.log('!!!!!', dialog.getData());
+    const formData = new FormData();
+    formData.append('name', editor.targetElm.getAttribute('name'));
+    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
+    formData.append('component', savedComponent);
+
+    try {
+      const response = await fetch('/api-html-components/component/componentobjects', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': window.ss.config.SecurityID,
         },
-        {
-          type: 'custom',
-          name: 'lastpage',
-          text: 'Done',
-          enabled: true
-        }
-      ],
-      initialData: {
-        // component: ''
-      },
-      onAction: async (dialogApi, details) => {
-
-        if (details.name === 'doesnothing') {
-
-          console.log('back')
-          dialogApi.block('Loading..')
-          await xhrLoadType(dialogApi);
-
-        } else if (details.name === 'lastpage') {
-
-
-          const data = dialogApi.getData();
-
-          const result = 'You chose wisely: ' + data.component;
-          console.log('>>>', details, data, savedComponent);
-
-          console.log('123', componentTypes, componentObjects)
-
-          // tinymce.activeEditor.execCommand('mceInsertContent', false, `<gf-component class="gf-component" data-class="${savedComponent}" data-id="${data.component}">[${result}]</gf-component>`);
-
-          var k1 = Object.keys(componentTypes).find(x => componentTypes[x].value === savedComponent);
-          var k2 = Object.keys(componentObjects).find(x => componentObjects[x].value === data.component);
-
-          tinymce.activeEditor.execCommand('mceInsertContent', false, `[htmlcomponentblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/htmlcomponentblock]`);
-
-          dialogApi.close();
-        }
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
 
+      const data = await response.json();
+      console.log(data);
+      // console.log(dialog.getData('type'))
+      // dialog.setData({sfPreview: 'ssss'})
+      // dialog.setData('type', {
+      //   enabled: true,
+      //   items: [
+      //     { text: 'One', value: '1' },
+      //     { text: 'Two', value: '2' },
+      //     { text: 'Submenu', items: [
+      //       { text: 'Three', value: '3' }
+      //     ]}
+      //   ]
+      // })
+      console.log('almost', dialog);
 
-        var savedComponent;
-        var componentTypes;
-        var componentObjects;
+      componentObjects = data;
 
+      const cfg = page2Config;
+      cfg.body.items[1].enabled = true;
+      cfg.body.items[1].items = data;
 
-        const xhrLoadType = async (dialog) => {
+      console.log('cfg', cfg.body.items);
+      dialog.unblock();
 
-          const formData = new FormData();
-          formData.append('name', editor.targetElm.getAttribute('name'))
-          formData.append('class', editor.targetElm.getAttribute('data-based-on-class'))
-          console.log(formData)
+      dialog.redial(cfg);
 
-
-          try {
-            const response = await fetch('/api-html-components/component/components', {
-              method: 'POST',
-              headers: {
-                'X-CSRF-TOKEN': window.ss.config.SecurityID
-              },
-              body: formData
-            });
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log(data);
-            // console.log(dialog.getData('type'))
-            // dialog.setData({sfPreview: 'ssss'})
-            // dialog.setData('type', {
-            //   enabled: true,
-            //   items: [
-            //     { text: 'One', value: '1' },
-            //     { text: 'Two', value: '2' },
-            //     { text: 'Submenu', items: [
-            //       { text: 'Three', value: '3' }
-            //     ]}
-            //   ]
-            // })
-
-            var cfg = page1Config;
-            cfg.body.items[1].enabled = true;
-            cfg.body.items[1].items = data;
-
-            componentTypes = data;
-
-            console.log('cfg', cfg)
-            dialog.redial(cfg)
-            // console.log('editor', editor.targetElm.getAttribute('name'));
-            // console.log('class', editor.targetElm.getAttribute('data-based-on-class'))
-            // console.dir(editor);
-            // console.log('entwune', jQuery(`#${editor.id}`).entwine('ss'))
-            dialog.unblock();
-
-          } catch (error) {
-            // console.error(error);
-          }
-
-        }
-
-
-        const xhrLoadType2 = async (dialog) => {
-
-          savedComponent = dialog.getData().component;
-          console.log('!!!!!', dialog.getData())
-          const formData = new FormData();
-          formData.append('name', editor.targetElm.getAttribute('name'))
-          formData.append('class', editor.targetElm.getAttribute('data-based-on-class'))
-          formData.append('component', savedComponent)
-
-          try {
-            const response = await fetch('/api-html-components/component/componentobjects', {
-              method: 'POST',
-              headers: {
-                'X-CSRF-TOKEN': window.ss.config.SecurityID
-              },
-              body: formData
-            });
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log(data);
-            // console.log(dialog.getData('type'))
-            // dialog.setData({sfPreview: 'ssss'})
-            // dialog.setData('type', {
-            //   enabled: true,
-            //   items: [
-            //     { text: 'One', value: '1' },
-            //     { text: 'Two', value: '2' },
-            //     { text: 'Submenu', items: [
-            //       { text: 'Three', value: '3' }
-            //     ]}
-            //   ]
-            // })
-            console.log('almost', dialog)
-
-            componentObjects = data;
-
-            var cfg = page2Config;
-            cfg.body.items[1].enabled = true;
-            cfg.body.items[1].items = data;
-
-            console.log('cfg', cfg.body.items)
-            dialog.unblock();
-
-            dialog.redial(cfg)
-
-            // return cfg;
-            // console.log('editor', editor.targetElm.getAttribute('name'));
-            // console.log('class', editor.targetElm.getAttribute('data-based-on-class'))
-            // console.dir(editor);
-            // console.log('entwune', jQuery(`#${editor.id}`).entwine('ss'))
-            console.log('finishied', dialog)
-          } catch (error) {
-            // console.error(error);
-          }
-
-        }
-
-
-        var getInitialState =  function () {
-          console.log('call')
-          console.log('after call')
-          return page1Config;
+      // return cfg;
+      // console.log('editor', editor.targetElm.getAttribute('name'));
+      // console.log('class', editor.targetElm.getAttribute('data-based-on-class'))
+      // console.dir(editor);
+      // console.log('entwune', jQuery(`#${editor.id}`).entwine('ss'))
+      console.log('finishied', dialog);
+    } catch (error) {
+      // console.error(error);
     }
+  };
 
+  const getInitialState = function () {
+    console.log('call');
+    console.log('after call');
+    return page1Config;
+  };
 
+  editor.ui.registry.addButton('customDropdown', {
+    icon: 'sharpen',
+    onAction: async () => {
+      console.log('start');
+      console.log('ready');
 
-
-    editor.ui.registry.addButton('customDropdown', {
-      icon: 'sharpen',
-      onAction: async () => {
-
-        console.log('start')
-        console.log('ready')
-
-        var dialog = editor.windowManager.open(getInitialState());//page1Config());
-        dialog.block('Loading ...')
+      const dialog = editor.windowManager.open(getInitialState());// page1Config());
+      dialog.block('Loading ...');
 
       //   dialog.setData({
       //     type: 'Open 2'
@@ -464,219 +437,213 @@ const page1Config = {
 
       await xhrLoadType(dialog);
 
+      return dialog;
 
-
-        return dialog;
-
-        // editor.windowManager.open(page1Config)
-        // return window.goldfinch_component.block('Loading..');
-      }
-    })
-
-    const filter = 'div[data-shortcode="htmlcomponentblock"]'
-
-      editor.ui.registry.addButton('gfcdelete', {
-        tooltip: 'Delete content block',
-        icon: 'remove',
-        onAction: () => editor.execCommand('gfc-delete'),
-      });
-
-      editor.ui.registry.addContextToolbar('customplugin', {
-        predicate: (node) => editor.dom.is(node, filter),
-        position: 'node',
-        scope: 'node',
-        items: 'gfcdelete'
-      });
-
-    editor.on('GetContent', (o) => {
-
-      const content = jQuery(`<div>${o.content}</div>`);
-
-        // Transform [embed] shortcodes
-        content
-          .find(filter)
-          .each(function replaceWithShortCode() {
-            // Note: embed <div> contains placeholder <img>, and potentially caption <p>
-            const embed = jQuery(this);
-            // If placeholder has been removed, remove data-* properties and
-            // convert to non-shortcode div
-            // const placeholder = embed.find('img.placeholder');
-            // if (placeholder.length === 0) {
-            //   // embed.removeAttr('data-url');
-            //   embed.removeAttr('data-shortcode');
-            //   return;
-            // }
-
-            // Find nested element data
-            // const caption = embed.find('.caption').text();
-            // const width = parseInt(placeholder.attr('width'), 10);
-            // const height = parseInt(placeholder.attr('height'), 10);
-            const dataId = embed.data('id');
-            const dataClass = embed.data('class');
-            const dataN = embed.data('n');
-            const dataBn = embed.data('bn');
-
-            const properties = sanitiseShortCodeProperties({
-              // url,
-              // thumbnail: placeholder.prop('src'),
-              'data-id': dataId,
-              'data-class': dataClass,
-              'data-n': dataN,
-              'data-bn': dataBn,
-              class: embed.prop('class'),
-              // caption,
-            });
-
-            console.log('properties', properties)
-
-            const shortCode = ShortcodeSerialiser.serialise({
-              name: 'htmlcomponentblock',
-              properties,
-              wrapped: true,
-              content: '', //embed.html(),
-            });
-
-            console.log('shortCode', shortCode)
-
-            embed.replaceWith(shortCode);
-          });
-
-        // eslint-disable-next-line no-param-reassign
-        o.content = content.html();
-        console.log('updated', o.content)
-      });
-
-
-
-      editor.on('BeforeSetContent', (o) => {
-        let content = o.content;
-        console.log('before set content', content)
-        // Transform [embed] tag
-        let match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
-        while (match) {
-          const data = match.properties;
-          console.log('data', data, match, data['data-id'])
-
-          // Add base div
-          const base = jQuery('<div/>')
-            // .attr('data-url', data.url || match.content)
-            .attr('data-id', data['data-id'])
-            .attr('data-class', data['data-class'])
-            .attr('data-n', data['data-n'])
-            .attr('data-bn', data['data-bn'])
-            .attr('data-shortcode', 'htmlcomponentblock')
-            .addClass(data.class)
-            // .addClass('ss-htmleditorfield-file htmlcomponentblock');
-
-          // Add placeholder
-          // const placeholder = jQuery('<img />')
-          //   .attr('src', data.thumbnail)
-          //   .addClass('placeholder');
-
-          // Set dimensions
-          // if (data.width) {
-          //   placeholder.attr('width', data.width);
-          // }
-          // if (data.height) {
-          //   placeholder.attr('height', data.height);
-          // }
-
-          // base.append(placeholder);
-          // base.html(match.content);
-          base.html('<img src="/component.svg">');
-
-          // Add caption p tag
-          // if (data.caption) {
-          //   const caption = jQuery('<p />')
-          //     .addClass('caption')
-          //     .text(data.caption);
-          //   base.append(caption);
-          // }
-
-          // Inject into code
-          content = content.replace(match.original, (jQuery('<div/>').append(base).html()));
-
-          // Search for next match
-          match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
-        }
-
-        // eslint-disable-next-line no-param-reassign
-        o.content = content;
-        console.log('before set content finished', content)
-      });
-
-    // return {
-    //     getMetadata: () => ({
-    //         name: 'sfPreview',
-    //         url: 'https://www.test.cn'
-    //     })
-    // };
-
-    // editor.ui.registry.addMenuButton('customDropdown', {
-    //   // icon: 'more-drawer',
-    //   // icon: 'preferences',
-    //   icon: 'sharpen',
-    //   // text: 'My button',
-    //   fetch: function (callback) {
-    //     var items = [
-    //       {
-    //         type: 'menuitem',
-    //         text: 'Menu item 1',
-    //         onAction: function () {
-    //           editor.insertContent('&nbsp;<em>You clicked menu item 1!</em>');
-    //         }
-    //       },
-    //       {
-    //         type: 'nestedmenuitem',
-    //         text: 'Menu item 2',
-    //         icon: 'user',
-    //         getSubmenuItems: function () {
-    //           return [
-    //             {
-    //               type: 'menuitem',
-    //               text: 'Sub menu item 1',
-    //               icon: 'unlock',
-    //               onAction: function () {
-    //                 editor.insertContent('&nbsp;<em>You clicked Sub menu item 1!</em>');
-    //               }
-    //             },
-    //             {
-    //               type: 'menuitem',
-    //               text: 'Sub menu item 2',
-    //               icon: 'lock',
-    //               onAction: function () {
-    //                 editor.insertContent('&nbsp;<em>You clicked Sub menu item 2!</em>');
-    //               }
-    //             }
-    //           ];
-    //         }
-    //       },
-    //       {
-    //         type: 'togglemenuitem',
-    //         text: 'Toggle menu item',
-    //         onAction: function () {
-    //           toggleState = !toggleState;
-    //           editor.insertContent('&nbsp;<em>You toggled a menuitem ' + (toggleState ? 'on' : 'off') + '</em>');
-    //         },
-    //         onSetup: function (api) {
-    //           api.setActive(toggleState);
-    //           return function() {};
-    //         }
-    //       }
-    //     ];
-    //     callback(items);
-    //   }
-    // });
-
-    return {
-      getMetadata: () => ({
-        name: 'Custom plugin',
-        url: 'https://example.com/docs/customplugin'
-      })
-    }
+      // editor.windowManager.open(page1Config)
+      // return window.goldfinch_component.block('Loading..');
+    },
   });
-// })();
 
+  const filter = 'div[data-shortcode="htmlcomponentblock"]';
+
+  editor.ui.registry.addButton('gfcdelete', {
+    tooltip: 'Delete content block',
+    icon: 'remove',
+    onAction: () => editor.execCommand('gfc-delete'),
+  });
+
+  editor.ui.registry.addContextToolbar('customplugin', {
+    predicate: (node) => editor.dom.is(node, filter),
+    position: 'node',
+    scope: 'node',
+    items: 'gfcdelete',
+  });
+
+  editor.on('GetContent', (o) => {
+    const content = jQuery(`<div>${o.content}</div>`);
+
+    // Transform [embed] shortcodes
+    content
+      .find(filter)
+      .each(function replaceWithShortCode() {
+        // Note: embed <div> contains placeholder <img>, and potentially caption <p>
+        const embed = jQuery(this);
+        // If placeholder has been removed, remove data-* properties and
+        // convert to non-shortcode div
+        // const placeholder = embed.find('img.placeholder');
+        // if (placeholder.length === 0) {
+        //   // embed.removeAttr('data-url');
+        //   embed.removeAttr('data-shortcode');
+        //   return;
+        // }
+
+        // Find nested element data
+        // const caption = embed.find('.caption').text();
+        // const width = parseInt(placeholder.attr('width'), 10);
+        // const height = parseInt(placeholder.attr('height'), 10);
+        const dataId = embed.data('id');
+        const dataClass = embed.data('class');
+        const dataN = embed.data('n');
+        const dataBn = embed.data('bn');
+
+        const properties = sanitiseShortCodeProperties({
+          // url,
+          // thumbnail: placeholder.prop('src'),
+          'data-id': dataId,
+          'data-class': dataClass,
+          'data-n': dataN,
+          'data-bn': dataBn,
+          class: embed.prop('class'),
+          // caption,
+        });
+
+        console.log('properties', properties);
+
+        const shortCode = ShortcodeSerialiser.serialise({
+          name: 'htmlcomponentblock',
+          properties,
+          wrapped: true,
+          content: '', // embed.html(),
+        });
+
+        console.log('shortCode', shortCode);
+
+        embed.replaceWith(shortCode);
+      });
+
+    // eslint-disable-next-line no-param-reassign
+    o.content = content.html();
+    console.log('updated', o.content);
+  });
+
+  editor.on('BeforeSetContent', (o) => {
+    let { content } = o;
+    console.log('before set content', content);
+    // Transform [embed] tag
+    let match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
+    while (match) {
+      const data = match.properties;
+      console.log('data', data, match, data['data-id']);
+
+      // Add base div
+      const base = jQuery('<div/>')
+      // .attr('data-url', data.url || match.content)
+        .attr('data-id', data['data-id'])
+        .attr('data-class', data['data-class'])
+        .attr('data-n', data['data-n'])
+        .attr('data-bn', data['data-bn'])
+        .attr('data-shortcode', 'htmlcomponentblock')
+        .addClass(data.class);
+      // .addClass('ss-htmleditorfield-file htmlcomponentblock');
+
+      // Add placeholder
+      // const placeholder = jQuery('<img />')
+      //   .attr('src', data.thumbnail)
+      //   .addClass('placeholder');
+
+      // Set dimensions
+      // if (data.width) {
+      //   placeholder.attr('width', data.width);
+      // }
+      // if (data.height) {
+      //   placeholder.attr('height', data.height);
+      // }
+
+      // base.append(placeholder);
+      // base.html(match.content);
+      base.html('<img src="/component.svg">');
+
+      // Add caption p tag
+      // if (data.caption) {
+      //   const caption = jQuery('<p />')
+      //     .addClass('caption')
+      //     .text(data.caption);
+      //   base.append(caption);
+      // }
+
+      // Inject into code
+      content = content.replace(match.original, (jQuery('<div/>').append(base).html()));
+
+      // Search for next match
+      match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    o.content = content;
+    console.log('before set content finished', content);
+  });
+
+  // return {
+  //     getMetadata: () => ({
+  //         name: 'sfPreview',
+  //         url: 'https://www.test.cn'
+  //     })
+  // };
+
+  // editor.ui.registry.addMenuButton('customDropdown', {
+  //   // icon: 'more-drawer',
+  //   // icon: 'preferences',
+  //   icon: 'sharpen',
+  //   // text: 'My button',
+  //   fetch: function (callback) {
+  //     var items = [
+  //       {
+  //         type: 'menuitem',
+  //         text: 'Menu item 1',
+  //         onAction: function () {
+  //           editor.insertContent('&nbsp;<em>You clicked menu item 1!</em>');
+  //         }
+  //       },
+  //       {
+  //         type: 'nestedmenuitem',
+  //         text: 'Menu item 2',
+  //         icon: 'user',
+  //         getSubmenuItems: function () {
+  //           return [
+  //             {
+  //               type: 'menuitem',
+  //               text: 'Sub menu item 1',
+  //               icon: 'unlock',
+  //               onAction: function () {
+  //                 editor.insertContent('&nbsp;<em>You clicked Sub menu item 1!</em>');
+  //               }
+  //             },
+  //             {
+  //               type: 'menuitem',
+  //               text: 'Sub menu item 2',
+  //               icon: 'lock',
+  //               onAction: function () {
+  //                 editor.insertContent('&nbsp;<em>You clicked Sub menu item 2!</em>');
+  //               }
+  //             }
+  //           ];
+  //         }
+  //       },
+  //       {
+  //         type: 'togglemenuitem',
+  //         text: 'Toggle menu item',
+  //         onAction: function () {
+  //           toggleState = !toggleState;
+  //           editor.insertContent('&nbsp;<em>You toggled a menuitem ' + (toggleState ? 'on' : 'off') + '</em>');
+  //         },
+  //         onSetup: function (api) {
+  //           api.setActive(toggleState);
+  //           return function() {};
+  //         }
+  //       }
+  //     ];
+  //     callback(items);
+  //   }
+  // });
+
+  return {
+    getMetadata: () => ({
+      name: 'Custom plugin',
+      url: 'https://example.com/docs/customplugin',
+    }),
+  };
+});
+// })();
 
 // (function() {
 //   tinymce.PluginManager.add('myplugin', function(editor, url) {

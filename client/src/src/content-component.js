@@ -1,27 +1,25 @@
-import ShortcodeSerialiser, { sanitiseShortCodeProperties } from './js/ShortcodeSerialiser'
+import ShortcodeSerialiser, { sanitiseShortCodeProperties } from './js/ShortcodeSerialiser';
 
-const useFetch = async function(url, formData) {
-
+const useFetch = async function (url, formData) {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      'X-CSRF-TOKEN': window.ss.config.SecurityID
+      'X-CSRF-TOKEN': window.ss.config.SecurityID,
     },
-    body: formData
+    body: formData,
   });
   if (!response.ok) {
     throw new Error('Fetch request failed');
   }
 
   return response.json();
-}
+};
 
 tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
-
-  var selectedComponent, componentTypes, componentObjects;
+  let selectedComponent; let componentTypes; let
+    componentObjects;
 
   editor.addCommand('cc-delete', () => {
-
     const node = editor.selection.getNode();
 
     if (editor.dom.is(node, filter)) {
@@ -31,7 +29,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     } else {
       console.error({
         error: 'Unexpected selection - expected embed',
-        selectedNode: node
+        selectedNode: node,
       });
     }
   });
@@ -42,18 +40,18 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     body: {
       type: 'panel',
       items: [{
-          type: 'htmlpanel',
-          html: '<p>Please, select type of component you would like to add</p><p></p>',
-        },
+        type: 'htmlpanel',
+        html: '<p>Please, select type of component you would like to add</p><p></p>',
+      },
 
-        {
-          type: 'listbox',
-          name: 'component',
-          label: 'Component',
-          enabled: false,
-          items: [ { text: '-', value: '-' } ],
-        }
-      ]
+      {
+        type: 'listbox',
+        name: 'component',
+        label: 'Component',
+        enabled: false,
+        items: [{ text: '-', value: '-' }],
+      },
+      ],
     },
     initialData: {},
     buttons: [{
@@ -63,18 +61,15 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
       enabled: false,
     }],
     onChange: (dialogApi, details) => {
-
       const data = dialogApi.getData();
       dialogApi.setEnabled('action_next', data.component);
     },
     onAction: async (dialogApi, details) => {
-
       if (details.name === 'action_next') {
-
-        dialogApi.block('Loading')
+        dialogApi.block('Loading');
         xhrLoadComponents(dialogApi);
       }
-    }
+    },
   };
 
   const window2 = {
@@ -82,118 +77,108 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     body: {
       type: 'panel',
       items: [{
-          type: 'htmlpanel',
-          html: '<p>Now, select the actual component you would like to be used</p><p></p>',
-        },
+        type: 'htmlpanel',
+        html: '<p>Now, select the actual component you would like to be used</p><p></p>',
+      },
 
-        {
-          type: 'listbox',
-          name: 'component',
-          label: 'Component',
-          enabled: false,
-          items: [ { text: '-', value: '-' } ],
-        }
-      ]
+      {
+        type: 'listbox',
+        name: 'component',
+        label: 'Component',
+        enabled: false,
+        items: [{ text: '-', value: '-' }],
+      },
+      ],
     },
     buttons: [{
-        type: 'custom',
-        name: 'action_back',
-        text: 'Back',
-        enabled: true,
-      },
-      {
-        type: 'custom',
-        name: 'action_insert',
-        text: 'Insert',
-        enabled: false,
-      }
+      type: 'custom',
+      name: 'action_back',
+      text: 'Back',
+      enabled: true,
+    },
+    {
+      type: 'custom',
+      name: 'action_insert',
+      text: 'Insert',
+      enabled: false,
+    },
     ],
     initialData: {},
     onChange: (dialogApi, details) => {
-
       const data = dialogApi.getData();
       dialogApi.setEnabled('action_insert', data.component);
     },
     onAction: async (dialogApi, details) => {
-
       if (details.name === 'action_back') {
-
-        dialogApi.block('Loading')
+        dialogApi.block('Loading');
         xhrLoadTypes(dialogApi);
-
       } else if (details.name === 'action_insert') {
-
         const data = dialogApi.getData();
 
-        var ctKey = Object.keys(componentTypes).find(x => componentTypes[x].value === selectedComponent);
-        var coKey = Object.keys(componentObjects).find(x => componentObjects[x].value === data.component);
+        const ctKey = Object.keys(componentTypes).find((x) => componentTypes[x].value === selectedComponent);
+        const coKey = Object.keys(componentObjects).find((x) => componentObjects[x].value === data.component);
 
         tinymce.activeEditor.execCommand('mceInsertContent', false, `[htmlcomponentblock class="gf-component" data-class="${selectedComponent}" data-id="${data.component}" data-bn="${componentTypes[ctKey].text}" data-n="${componentObjects[coKey].text}"].[/htmlcomponentblock]`);
 
         dialogApi.close();
       }
-    }
+    },
   };
 
   const xhrLoadTypes = async (dialogApi) => {
-
     const formData = new FormData();
-    formData.append('name', editor.targetElm.getAttribute('name'))
-    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'))
+    formData.append('name', editor.targetElm.getAttribute('name'));
+    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
 
     try {
-      const data = await useFetch('/api-html-components/component/types', formData)
+      const data = await useFetch('/api-html-components/component/types', formData);
 
-      var cfg = window1;
+      const cfg = window1;
       cfg.body.items[1].enabled = true;
       cfg.body.items[1].items = data;
 
       componentTypes = data;
 
-      dialogApi.redial(cfg)
+      dialogApi.redial(cfg);
       dialogApi.unblock();
-
     } catch (error) {}
-  }
+  };
 
   const xhrLoadComponents = async (dialogApi) => {
-
     selectedComponent = dialogApi.getData().component;
 
     const formData = new FormData();
 
-    formData.append('name', editor.targetElm.getAttribute('name'))
-    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'))
-    formData.append('component', selectedComponent)
+    formData.append('name', editor.targetElm.getAttribute('name'));
+    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
+    formData.append('component', selectedComponent);
 
     try {
-      const data = await useFetch('/api-html-components/component/objects', formData)
+      const data = await useFetch('/api-html-components/component/objects', formData);
 
       componentObjects = data;
 
-      var cfg = window2;
+      const cfg = window2;
       cfg.body.items[1].enabled = true;
       cfg.body.items[1].items = data;
 
       dialogApi.unblock();
-      dialogApi.redial(cfg)
-
+      dialogApi.redial(cfg);
     } catch (error) {}
-  }
+  };
 
   editor.ui.registry.addButton('htmlcomponents', {
     icon: 'sharpen',
     onAction: async () => {
-
-      var dialogApi = editor.windowManager.open(window1);
-      dialogApi.block('Loading')
+      const dialogApi = editor.windowManager.open(window1);
+      dialogApi.block('Loading');
       xhrLoadTypes(dialogApi);
 
       return dialogApi;
-    }
-  })
+    },
+  });
 
-  const filter = 'div[data-shortcode="htmlcomponentblock"]'
+  const filter = 'div[data-shortcode="htmlcomponentblock"]';
 
   editor.ui.registry.addButton('ccdelete', {
     tooltip: 'Delete content block',
@@ -205,18 +190,16 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     predicate: (node) => editor.dom.is(node, filter),
     position: 'node',
     scope: 'node',
-    items: 'ccdelete'
+    items: 'ccdelete',
   });
 
   editor.on('GetContent', (o) => {
-
     const content = jQuery(`<div>${o.content}</div>`);
 
     // Transform [embed] shortcodes
     content
       .find(filter)
       .each(function replaceWithShortCode() {
-
         const embed = jQuery(this);
 
         const dataId = embed.data('id');
@@ -236,7 +219,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
           name: 'htmlcomponentblock',
           properties,
           wrapped: true,
-          content: '', //embed.html(),
+          content: '', // embed.html(),
         });
 
         embed.replaceWith(shortCode);
@@ -246,8 +229,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
   });
 
   editor.on('BeforeSetContent', (o) => {
-
-    let content = o.content;
+    let { content } = o;
     // Transform [embed] tag
     let match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
 
@@ -261,7 +243,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
         .attr('data-n', data['data-n'])
         .attr('data-bn', data['data-bn'])
         .attr('data-shortcode', 'htmlcomponentblock')
-        .addClass(data.class)
+        .addClass(data.class);
 
       base.html('<img src="/_resources/vendor/goldfinch/html-components/client/dist/images/component.svg" width="">');
 
@@ -276,7 +258,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
   return {
     getMetadata: () => ({
       name: 'Goldfinch Components',
-      url: 'https://github.com/goldfinch/html-components'
-    })
-  }
+      url: 'https://github.com/goldfinch/html-components',
+    }),
+  };
 });

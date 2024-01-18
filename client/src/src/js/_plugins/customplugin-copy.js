@@ -1,96 +1,95 @@
 // (function() {
-  tinymce.PluginManager.add('customplugin', (editor, url) => {
-    // add plugin code here
+tinymce.PluginManager.add('customplugin', (editor, url) => {
+  // add plugin code here
 
-    // editor.ui.registry.addButton('customInsertButton', {
-    //   text: 'My Button',
-    //   onAction: (_) => editor.insertContent(`&nbsp;<strong>It's my button!</strong>&nbsp;`)
-    // });
+  // editor.ui.registry.addButton('customInsertButton', {
+  //   text: 'My Button',
+  //   onAction: (_) => editor.insertContent(`&nbsp;<strong>It's my button!</strong>&nbsp;`)
+  // });
 
-    // const toTimeHtml = (date) => `<time datetime="${date.toString()}">${date.toDateString()}</time>`;
+  // const toTimeHtml = (date) => `<time datetime="${date.toString()}">${date.toDateString()}</time>`;
 
-    // editor.ui.registry.addButton('customDateButton', {
-    //   icon: 'insert-time',
-    //   tooltip: 'Insert Current Date',
-    //   enabled: false,
-    //   onAction: (_) => editor.insertContent(toTimeHtml(new Date())),
-    //   onSetup: (buttonApi) => {
-    //     const editorEventCallback = (eventApi) => {
-    //       buttonApi.setEnabled(eventApi.element.nodeName.toLowerCase() !== 'time');
-    //     };
-    //     editor.on('NodeChange', editorEventCallback);
+  // editor.ui.registry.addButton('customDateButton', {
+  //   icon: 'insert-time',
+  //   tooltip: 'Insert Current Date',
+  //   enabled: false,
+  //   onAction: (_) => editor.insertContent(toTimeHtml(new Date())),
+  //   onSetup: (buttonApi) => {
+  //     const editorEventCallback = (eventApi) => {
+  //       buttonApi.setEnabled(eventApi.element.nodeName.toLowerCase() !== 'time');
+  //     };
+  //     editor.on('NodeChange', editorEventCallback);
 
-    //     /* onSetup should always return the unbind handlers */
-    //     return () => editor.off('NodeChange', editorEventCallback);
-    //   }
-    // });
-    var toggleState = false;
+  //     /* onSetup should always return the unbind handlers */
+  //     return () => editor.off('NodeChange', editorEventCallback);
+  //   }
+  // });
+  let toggleState = false;
 
-    editor.ui.registry.addMenuButton('customDropdown', {
-      // icon: 'more-drawer',
-      // icon: 'preferences',
-      icon: 'sharpen',
-      // text: 'My button',
-      fetch: function (callback) {
-        var items = [
-          {
-            type: 'menuitem',
-            text: 'Menu item 1',
-            onAction: function () {
-              editor.insertContent('&nbsp;<em>You clicked menu item 1!</em>');
-            }
+  editor.ui.registry.addMenuButton('customDropdown', {
+    // icon: 'more-drawer',
+    // icon: 'preferences',
+    icon: 'sharpen',
+    // text: 'My button',
+    fetch(callback) {
+      const items = [
+        {
+          type: 'menuitem',
+          text: 'Menu item 1',
+          onAction() {
+            editor.insertContent('&nbsp;<em>You clicked menu item 1!</em>');
           },
-          {
-            type: 'nestedmenuitem',
-            text: 'Menu item 2',
-            icon: 'user',
-            getSubmenuItems: function () {
-              return [
-                {
-                  type: 'menuitem',
-                  text: 'Sub menu item 1',
-                  icon: 'unlock',
-                  onAction: function () {
-                    editor.insertContent('&nbsp;<em>You clicked Sub menu item 1!</em>');
-                  }
+        },
+        {
+          type: 'nestedmenuitem',
+          text: 'Menu item 2',
+          icon: 'user',
+          getSubmenuItems() {
+            return [
+              {
+                type: 'menuitem',
+                text: 'Sub menu item 1',
+                icon: 'unlock',
+                onAction() {
+                  editor.insertContent('&nbsp;<em>You clicked Sub menu item 1!</em>');
                 },
-                {
-                  type: 'menuitem',
-                  text: 'Sub menu item 2',
-                  icon: 'lock',
-                  onAction: function () {
-                    editor.insertContent('&nbsp;<em>You clicked Sub menu item 2!</em>');
-                  }
-                }
-              ];
-            }
+              },
+              {
+                type: 'menuitem',
+                text: 'Sub menu item 2',
+                icon: 'lock',
+                onAction() {
+                  editor.insertContent('&nbsp;<em>You clicked Sub menu item 2!</em>');
+                },
+              },
+            ];
           },
-          {
-            type: 'togglemenuitem',
-            text: 'Toggle menu item',
-            onAction: function () {
-              toggleState = !toggleState;
-              editor.insertContent('&nbsp;<em>You toggled a menuitem ' + (toggleState ? 'on' : 'off') + '</em>');
-            },
-            onSetup: function (api) {
-              api.setActive(toggleState);
-              return function() {};
-            }
-          }
-        ];
-        callback(items);
-      }
-    });
-
-    // return {
-    //   getMetadata: () => ({
-    //     name: 'Custom plugin',
-    //     url: 'https://example.com/docs/customplugin'
-    //   })
-    // }
+        },
+        {
+          type: 'togglemenuitem',
+          text: 'Toggle menu item',
+          onAction() {
+            toggleState = !toggleState;
+            editor.insertContent(`&nbsp;<em>You toggled a menuitem ${toggleState ? 'on' : 'off'}</em>`);
+          },
+          onSetup(api) {
+            api.setActive(toggleState);
+            return function () {};
+          },
+        },
+      ];
+      callback(items);
+    },
   });
-// })();
 
+  // return {
+  //   getMetadata: () => ({
+  //     name: 'Custom plugin',
+  //     url: 'https://example.com/docs/customplugin'
+  //   })
+  // }
+});
+// })();
 
 // (function() {
 //   tinymce.PluginManager.add('myplugin', function(editor, url) {
