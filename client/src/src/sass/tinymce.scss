@@ -1,21 +1,21 @@
 .gf-component {
-  margin: 20px 0;
-  padding: 20px;
-  background-color: #fefefe;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 20px;
+  margin: 20px 0;
   color: #6487b6;
+  background-color: #fefefe;
   border: 2px dashed #6487b6;
 
-  &:after {
-    content: attr(data-bn) " • " attr(data-n) " • " attr(data-id);
+  &::after {
     display: block;
     width: 100%;
+    margin-top: 10px;
     font-size: 11px;
     text-align: center;
-    margin-top: 10px;
+    content: attr(data-bn) " • " attr(data-n) " • " attr(data-id);
   }
 }
 
