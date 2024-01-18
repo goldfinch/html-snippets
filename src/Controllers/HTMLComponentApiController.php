@@ -15,10 +15,7 @@ class HTMLComponentApiController extends Controller
         'POST objects' => 'objects',
     ];
 
-    private static $allowed_actions = [
-        'types',
-        'objects',
-    ];
+    private static $allowed_actions = ['types', 'objects'];
 
     public function objects(HTTPRequest $request)
     {
@@ -28,23 +25,21 @@ class HTMLComponentApiController extends Controller
 
         $data = $request->postVars();
 
-        if ($components = $this->getComponents($data))
-        {
-            if (in_array($data['component'], $components))
-            {
+        if ($components = $this->getComponents($data)) {
+            if (in_array($data['component'], $components)) {
                 $records = $data['component']::get();
 
-                $list = [
-                  ['text' => '-', 'value' => '']
-                ];
+                $list = [['text' => '-', 'value' => '']];
 
-                foreach($records as $record)
-                {
+                foreach ($records as $record) {
                     if (!$record->Component_Visibility) {
-                      continue;
+                        continue;
                     }
 
-                    $list[] = ['text' => $record->Component_Name, 'value' => strval($record->ID)];
+                    $list[] = [
+                        'text' => $record->Component_Name,
+                        'value' => strval($record->ID),
+                    ];
                 }
 
                 return json_encode($list);
@@ -62,15 +57,14 @@ class HTMLComponentApiController extends Controller
 
         $data = $request->postVars();
 
-        if ($components = $this->getComponents($data))
-        {
-            $list = [
-              ['text' => '-', 'value' => '']
-            ];
+        if ($components = $this->getComponents($data)) {
+            $list = [['text' => '-', 'value' => '']];
 
-            foreach($components as $component)
-            {
-                $list[] = ['text' => Str::of(class_basename($component))->headline(), 'value' => $component];
+            foreach ($components as $component) {
+                $list[] = [
+                    'text' => Str::of(class_basename($component))->headline(),
+                    'value' => $component,
+                ];
             }
 
             return json_encode($list);
@@ -83,20 +77,15 @@ class HTMLComponentApiController extends Controller
     {
         $cfg = Config::inst()->get($data['class']);
 
-        if (isset($cfg['allowed_components']))
-        {
+        if (isset($cfg['allowed_components'])) {
             $allowed_components = $cfg['allowed_components'];
 
-            if (isset($allowed_components[$data['name']]))
-            {
+            if (isset($allowed_components[$data['name']])) {
                 $components = $allowed_components[$data['name']];
 
-                if (count($components))
-                {
+                if (count($components)) {
                     return $components;
-                }
-                else
-                {
+                } else {
                     // return all components that exist?
                 }
             }
@@ -107,12 +96,12 @@ class HTMLComponentApiController extends Controller
 
     protected function authorized(HTTPRequest $request)
     {
-        if(!$request->isPOST())
-        {
+        if (!$request->isPOST()) {
             return $this->httpError(403, 'This action is unauthorized');
-        }
-        else if($request->getHeader('X-CSRF-TOKEN') != SecurityToken::getSecurityID())
-        {
+        } elseif (
+            $request->getHeader('X-CSRF-TOKEN') !=
+            SecurityToken::getSecurityID()
+        ) {
             return $this->httpError(401, 'Unauthorized');
         }
     }

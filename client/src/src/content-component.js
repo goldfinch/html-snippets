@@ -1,4 +1,6 @@
-import ShortcodeSerialiser, { sanitiseShortCodeProperties } from './js/ShortcodeSerialiser';
+import ShortcodeSerialiser, {
+  sanitiseShortCodeProperties,
+} from './js/ShortcodeSerialiser';
 
 const useFetch = async function (url, formData) {
   const response = await fetch(url, {
@@ -16,8 +18,9 @@ const useFetch = async function (url, formData) {
 };
 
 tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
-  let selectedComponent; let componentTypes; let
-    componentObjects;
+  let selectedComponent;
+  let componentTypes;
+  let componentObjects;
 
   editor.addCommand('cc-delete', () => {
     const node = editor.selection.getNode();
@@ -35,31 +38,33 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
   });
 
   const window1 = {
-
     title: 'Content Components',
     body: {
       type: 'panel',
-      items: [{
-        type: 'htmlpanel',
-        html: '<p>Please, select type of component you would like to add</p><p></p>',
-      },
+      items: [
+        {
+          type: 'htmlpanel',
+          html: '<p>Please, select type of component you would like to add</p><p></p>',
+        },
 
-      {
-        type: 'listbox',
-        name: 'component',
-        label: 'Component',
-        enabled: false,
-        items: [{ text: '-', value: '-' }],
-      },
+        {
+          type: 'listbox',
+          name: 'component',
+          label: 'Component',
+          enabled: false,
+          items: [{ text: '-', value: '-' }],
+        },
       ],
     },
     initialData: {},
-    buttons: [{
-      type: 'custom',
-      name: 'action_next',
-      text: 'Next',
-      enabled: false,
-    }],
+    buttons: [
+      {
+        type: 'custom',
+        name: 'action_next',
+        text: 'Next',
+        enabled: false,
+      },
+    ],
     onChange: (dialogApi, details) => {
       const data = dialogApi.getData();
       dialogApi.setEnabled('action_next', data.component);
@@ -76,32 +81,34 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     title: 'Content Components',
     body: {
       type: 'panel',
-      items: [{
-        type: 'htmlpanel',
-        html: '<p>Now, select the actual component you would like to be used</p><p></p>',
-      },
+      items: [
+        {
+          type: 'htmlpanel',
+          html: '<p>Now, select the actual component you would like to be used</p><p></p>',
+        },
 
-      {
-        type: 'listbox',
-        name: 'component',
-        label: 'Component',
-        enabled: false,
-        items: [{ text: '-', value: '-' }],
-      },
+        {
+          type: 'listbox',
+          name: 'component',
+          label: 'Component',
+          enabled: false,
+          items: [{ text: '-', value: '-' }],
+        },
       ],
     },
-    buttons: [{
-      type: 'custom',
-      name: 'action_back',
-      text: 'Back',
-      enabled: true,
-    },
-    {
-      type: 'custom',
-      name: 'action_insert',
-      text: 'Insert',
-      enabled: false,
-    },
+    buttons: [
+      {
+        type: 'custom',
+        name: 'action_back',
+        text: 'Back',
+        enabled: true,
+      },
+      {
+        type: 'custom',
+        name: 'action_insert',
+        text: 'Insert',
+        enabled: false,
+      },
     ],
     initialData: {},
     onChange: (dialogApi, details) => {
@@ -115,10 +122,18 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
       } else if (details.name === 'action_insert') {
         const data = dialogApi.getData();
 
-        const ctKey = Object.keys(componentTypes).find((x) => componentTypes[x].value === selectedComponent);
-        const coKey = Object.keys(componentObjects).find((x) => componentObjects[x].value === data.component);
+        const ctKey = Object.keys(componentTypes).find(
+          (x) => componentTypes[x].value === selectedComponent,
+        );
+        const coKey = Object.keys(componentObjects).find(
+          (x) => componentObjects[x].value === data.component,
+        );
 
-        tinymce.activeEditor.execCommand('mceInsertContent', false, `[htmlcomponentblock class="gf-component" data-class="${selectedComponent}" data-id="${data.component}" data-bn="${componentTypes[ctKey].text}" data-n="${componentObjects[coKey].text}"].[/htmlcomponentblock]`);
+        tinymce.activeEditor.execCommand(
+          'mceInsertContent',
+          false,
+          `[htmlcomponentblock class="gf-component" data-class="${selectedComponent}" data-id="${data.component}" data-bn="${componentTypes[ctKey].text}" data-n="${componentObjects[coKey].text}"].[/htmlcomponentblock]`,
+        );
 
         dialogApi.close();
       }
@@ -128,10 +143,16 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
   const xhrLoadTypes = async (dialogApi) => {
     const formData = new FormData();
     formData.append('name', editor.targetElm.getAttribute('name'));
-    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
+    formData.append(
+      'class',
+      editor.targetElm.getAttribute('data-based-on-class'),
+    );
 
     try {
-      const data = await useFetch('/api-html-components/component/types', formData);
+      const data = await useFetch(
+        '/api-html-components/component/types',
+        formData,
+      );
 
       const cfg = window1;
       cfg.body.items[1].enabled = true;
@@ -150,11 +171,17 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     const formData = new FormData();
 
     formData.append('name', editor.targetElm.getAttribute('name'));
-    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
+    formData.append(
+      'class',
+      editor.targetElm.getAttribute('data-based-on-class'),
+    );
     formData.append('component', selectedComponent);
 
     try {
-      const data = await useFetch('/api-html-components/component/objects', formData);
+      const data = await useFetch(
+        '/api-html-components/component/objects',
+        formData,
+      );
 
       componentObjects = data;
 
@@ -197,33 +224,31 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     const content = jQuery(`<div>${o.content}</div>`);
 
     // Transform [embed] shortcodes
-    content
-      .find(filter)
-      .each(function replaceWithShortCode() {
-        const embed = jQuery(this);
+    content.find(filter).each(function replaceWithShortCode() {
+      const embed = jQuery(this);
 
-        const dataId = embed.data('id');
-        const dataClass = embed.data('class');
-        const dataN = embed.data('n');
-        const dataBn = embed.data('bn');
+      const dataId = embed.data('id');
+      const dataClass = embed.data('class');
+      const dataN = embed.data('n');
+      const dataBn = embed.data('bn');
 
-        const properties = sanitiseShortCodeProperties({
-          'data-id': dataId,
-          'data-class': dataClass,
-          'data-n': dataN,
-          'data-bn': dataBn,
-          class: embed.prop('class'),
-        });
-
-        const shortCode = ShortcodeSerialiser.serialise({
-          name: 'htmlcomponentblock',
-          properties,
-          wrapped: true,
-          content: '', // embed.html(),
-        });
-
-        embed.replaceWith(shortCode);
+      const properties = sanitiseShortCodeProperties({
+        'data-id': dataId,
+        'data-class': dataClass,
+        'data-n': dataN,
+        'data-bn': dataBn,
+        class: embed.prop('class'),
       });
+
+      const shortCode = ShortcodeSerialiser.serialise({
+        name: 'htmlcomponentblock',
+        properties,
+        wrapped: true,
+        content: '', // embed.html(),
+      });
+
+      embed.replaceWith(shortCode);
+    });
 
     o.content = content.html();
   });
@@ -245,9 +270,14 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
         .attr('data-shortcode', 'htmlcomponentblock')
         .addClass(data.class);
 
-      base.html('<img src="/_resources/vendor/goldfinch/html-components/client/dist/images/component.svg" width="">');
+      base.html(
+        '<img src="/_resources/vendor/goldfinch/html-components/client/dist/images/component.svg" width="">',
+      );
 
-      content = content.replace(match.original, (jQuery('<div/>').append(base).html()));
+      content = content.replace(
+        match.original,
+        jQuery('<div/>').append(base).html(),
+      );
 
       match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
     }

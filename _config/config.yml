@@ -1,17 +1,16 @@
 ---
 Name: goldfinch-html-components
 After:
-  - '#goldfinch-editor-config'
+  - "#goldfinch-editor-config"
 ---
-
 SilverStripe\Forms\HTMLEditor\HTMLEditorField:
   extensions:
     - Goldfinch\HTMLComponents\Extensions\HTMLEditorExtension
 
 SilverStripe\Admin\LeftAndMain:
   extra_requirements_css:
-    - 'goldfinch/html-components:client/dist/component.css'
+    - "goldfinch/html-components:client/dist/component.css"
 
 SilverStripe\Forms\HTMLEditor\TinyMCEConfig:
   editor_css:
-    - 'goldfinch/html-components:client/dist/tinymce.css'
+    - "goldfinch/html-components:client/dist/tinymce.css"

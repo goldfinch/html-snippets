@@ -30,27 +30,18 @@ class HTMLComponent extends DataObject
     ];
 
     private static $belongs_to = [
-        'Component' => HTMLComponent::class.'.Component',
+        'Component' => HTMLComponent::class . '.Component',
     ];
 
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
 
-        $fields->addFieldsToTab(
-          'Root.Settings',
-          [
-              TextField::create(
-                'Component_Name',
-                'Component name'
-              ),
+        $fields->addFieldsToTab('Root.Settings', [
+            TextField::create('Component_Name', 'Component name'),
 
-              CheckboxField::create(
-                'Component_Visibility',
-                'Visibility'
-              ),
-          ]
-        );
+            CheckboxField::create('Component_Visibility', 'Visibility'),
+        ]);
 
         // $fields->removeByName('Root_Main');
 
@@ -62,8 +53,7 @@ class HTMLComponent extends DataObject
         //     $main->getChildren()
         // );
 
-        if (!$this->ID)
-        {
+        if (!$this->ID) {
             $fields->removeByName('Main');
 
             $classes = ClassInfo::getValidSubClasses($this->ClassName);
@@ -71,23 +61,23 @@ class HTMLComponent extends DataObject
 
             $list[] = '-';
 
-            foreach($classes as $class)
-            {
+            foreach ($classes as $class) {
                 $list[$class] = Str::of(class_basename($class))->headline();
             }
 
             unset($list[$this->ClassName]);
 
-            $fields->insertAfter('Component_Name', DropdownField::create(
-              'ClassName',
-              'Component type',
-              array_reverse($list),
-            ));
+            $fields->insertAfter(
+                'Component_Name',
+                DropdownField::create(
+                    'ClassName',
+                    'Component type',
+                    array_reverse($list),
+                ),
+            );
         }
 
-
-        if ($this->ID)
-        {
+        if ($this->ID) {
             // $componentFields = $this->ComponentOf()->getCMSFields()->setValues($this->ComponentOf()->toMap());
 
             // foreach ($componentFields->fieldByName('Root')->Tabs()->reverse() as $tab)

@@ -48,12 +48,14 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
      *
      * @return string
      */
-    public static function handle_shortcode($arguments, $content, $parser, $shortcode, $extra = [])
-    {
+    public static function handle_shortcode(
+        $arguments,
+        $content,
+        $parser,
+        $shortcode,
+        $extra = [],
+    ) {
         // TODO: validation
-
-
-
 
         // // Get service URL
         // if (!empty($content)) {
@@ -136,18 +138,19 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
 
         $component = $arguments['data-class']::get_by_id($arguments['data-id']);
 
-        if ($component->Component_Visibility)
-        {
-            return $component->renderWith('Components/HTML/' . class_basename($component));
-        }
-        else
-        {
+        if ($component->Component_Visibility) {
+            return $component->renderWith(
+                'Components/HTML/' . class_basename($component),
+            );
+        } else {
             return;
         }
     }
 
-    public static function embeddableToHtml(Embeddable $embeddable, array $arguments): string
-    {
+    public static function embeddableToHtml(
+        Embeddable $embeddable,
+        array $arguments,
+    ): string {
         // Only EmbedContainer is supported
         if (!($embeddable instanceof EmbedContainer)) {
             return '';
@@ -165,7 +168,11 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
             return static::photoEmbed($arguments, (string) $extractor->url);
         }
         if ($type === 'link') {
-            return static::linkEmbed($arguments, (string) $extractor->url, $extractor->title);
+            return static::linkEmbed(
+                $arguments,
+                (string) $extractor->url,
+                $extractor->title,
+            );
         }
         return '';
     }
@@ -181,7 +188,8 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
     {
         // Ensure outer div has given width (but leave height auto)
         if (!empty($arguments['width'])) {
-            $arguments['style'] = 'width: ' . intval($arguments['width']) . 'px;';
+            $arguments['style'] =
+                'width: ' . intval($arguments['width']) . 'px;';
         }
 
         // override iframe dimension attributes provided by webservice with ones specified in shortcode arguments
@@ -191,25 +199,38 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
             }
             foreach (['"', "'"] as $quote) {
                 $rx = "/(<iframe .*?)$attr=$quote([0-9]+)$quote([^>]+>)/";
-                $content = preg_replace($rx ?? '', "$1{$attr}={$quote}{$value}{$quote}$3", $content ?? '');
+                $content = preg_replace(
+                    $rx ?? '',
+                    "$1{$attr}={$quote}{$value}{$quote}$3",
+                    $content ?? '',
+                );
             }
         }
 
-        $attributes = static::buildAttributeListFromArguments($arguments, ['width', 'height', 'url', 'caption']);
+        $attributes = static::buildAttributeListFromArguments($arguments, [
+            'width',
+            'height',
+            'url',
+            'caption',
+        ]);
         if (array_key_exists('style', $arguments)) {
-            $attributes->push(ArrayData::create([
-                'Name' => 'style',
-                'Value' => Convert::raw2att($arguments['style']),
-            ]));
+            $attributes->push(
+                ArrayData::create([
+                    'Name' => 'style',
+                    'Value' => Convert::raw2att($arguments['style']),
+                ]),
+            );
         }
 
         $data = [
             'Arguments' => $arguments,
             'Attributes' => $attributes,
-            'Content' => DBField::create_field('HTMLFragment', $content)
+            'Content' => DBField::create_field('HTMLFragment', $content),
         ];
 
-        return ArrayData::create($data)->renderWith(self::class . '_video')->forTemplate();
+        return ArrayData::create($data)
+            ->renderWith(self::class . '_video')
+            ->forTemplate();
     }
 
     /**
@@ -224,12 +245,19 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
     {
         $data = [
             'Arguments' => $arguments,
-            'Attributes' => static::buildAttributeListFromArguments($arguments, ['width', 'height', 'url', 'caption']),
+            'Attributes' => static::buildAttributeListFromArguments(
+                $arguments,
+                ['width', 'height', 'url', 'caption'],
+            ),
             'Href' => $href,
-            'Title' => !empty($arguments['caption']) ? ($arguments['caption']) : $title
+            'Title' => !empty($arguments['caption'])
+                ? $arguments['caption']
+                : $title,
         ];
 
-        return ArrayData::create($data)->renderWith(self::class . '_link')->forTemplate();
+        return ArrayData::create($data)
+            ->renderWith(self::class . '_link')
+            ->forTemplate();
     }
 
     /**
@@ -243,11 +271,16 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
     {
         $data = [
             'Arguments' => $arguments,
-            'Attributes' => static::buildAttributeListFromArguments($arguments, ['url']),
-            'Src' => $src
+            'Attributes' => static::buildAttributeListFromArguments(
+                $arguments,
+                ['url'],
+            ),
+            'Src' => $src,
         ];
 
-        return ArrayData::create($data)->renderWith(self::class . '_photo')->forTemplate();
+        return ArrayData::create($data)
+            ->renderWith(self::class . '_photo')
+            ->forTemplate();
     }
 
     /**
@@ -257,8 +290,10 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
      * @param array $exclude List of attribute names to exclude from the resulting list
      * @return ArrayList
      */
-    private static function buildAttributeListFromArguments(array $arguments, array $exclude = []): ArrayList
-    {
+    private static function buildAttributeListFromArguments(
+        array $arguments,
+        array $exclude = [],
+    ): ArrayList {
         // A whitelist of shortcode attributes which are allowed in the resultant markup.
         // Note that the tinymce plugin restricts attributes on the client-side separately.
         $whitelist = [
@@ -267,12 +302,16 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
             'class',
             'width',
             'height',
-            'caption'
+            'caption',
         ];
         // Clean out any empty arguments and anything not whitelisted
-        $arguments = array_filter($arguments, function ($value, $key) use ($whitelist) {
-            return in_array($key, $whitelist) && strlen(trim($value ?? ''));
-        }, ARRAY_FILTER_USE_BOTH);
+        $arguments = array_filter(
+            $arguments,
+            function ($value, $key) use ($whitelist) {
+                return in_array($key, $whitelist) && strlen(trim($value ?? ''));
+            },
+            ARRAY_FILTER_USE_BOTH,
+        );
 
         $attributes = ArrayList::create();
         foreach ($arguments as $key => $value) {
@@ -280,10 +319,12 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
                 continue;
             }
 
-            $attributes->push(ArrayData::create([
-                'Name' => $key,
-                'Value' => Convert::raw2att($value)
-            ]));
+            $attributes->push(
+                ArrayData::create([
+                    'Name' => $key,
+                    'Value' => Convert::raw2att($value),
+                ]),
+            );
         }
 
         return $attributes;
@@ -293,15 +334,17 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
      * @param ShortcodeParser $parser
      * @param string $content
      */
-    public static function flushCachedShortcodes(ShortcodeParser $parser, string $content): void
-    {
+    public static function flushCachedShortcodes(
+        ShortcodeParser $parser,
+        string $content,
+    ): void {
         $cache = static::getCache();
         $tags = $parser->extractTags($content);
         foreach ($tags as $tag) {
             if (!isset($tag['open']) || $tag['open'] != 'embed') {
                 continue;
             }
-            $url = $tag['content'] ?? $tag['attrs']['url'] ?? '';
+            $url = $tag['content'] ?? ($tag['attrs']['url'] ?? '');
             $class = $tag['attrs']['class'] ?? '';
             $width = $tag['attrs']['width'] ?? '';
             $height = $tag['attrs']['height'] ?? '';
@@ -325,22 +368,31 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
      */
     private static function getCache(): CacheInterface
     {
-        return Injector::inst()->get(CacheInterface::class . '.EmbedShortcodeProvider');
+        return Injector::inst()->get(
+            CacheInterface::class . '.EmbedShortcodeProvider',
+        );
     }
 
     /**
      * @param string $url
      * @return string
      */
-    private static function deriveCacheKey(string $url, string $class, string $width, string $height): string
-    {
-        return implode('-', array_filter([
-            'embed-shortcode',
-            self::cleanKeySegment($url),
-            self::cleanKeySegment($class),
-            self::cleanKeySegment($width),
-            self::cleanKeySegment($height)
-        ]));
+    private static function deriveCacheKey(
+        string $url,
+        string $class,
+        string $width,
+        string $height,
+    ): string {
+        return implode(
+            '-',
+            array_filter([
+                'embed-shortcode',
+                self::cleanKeySegment($url),
+                self::cleanKeySegment($class),
+                self::cleanKeySegment($width),
+                self::cleanKeySegment($height),
+            ]),
+        );
     }
 
     /**

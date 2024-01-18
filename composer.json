@@ -2,9 +2,7 @@
     "name": "goldfinch/html-components",
     "description": "",
     "type": "silverstripe-vendormodule",
-    "keywords": [
-        "silverstripe"
-    ],
+    "keywords": ["silverstripe"],
     "license": "MIT",
     "authors": [
         {
@@ -26,9 +24,7 @@
         }
     },
     "extra": {
-        "expose": [
-            "client/dist"
-        ]
+        "expose": ["client/dist"]
     },
     "minimum-stability": "dev",
     "prefer-stable": true

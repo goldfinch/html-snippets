@@ -18,10 +18,10 @@ class HTMLComponentsAdmin extends ModelAdmin
 
     private static $managed_models = [
         HTMLComponent::class => [
-            'title'=> 'Segments',
+            'title' => 'Segments',
         ],
         HTMLComponentConfig::class => [
-            'title'=> 'Settings',
+            'title' => 'Settings',
         ],
     ];
 }

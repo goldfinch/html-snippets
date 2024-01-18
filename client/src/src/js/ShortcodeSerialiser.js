@@ -13,14 +13,15 @@
 // Used to match outer regexp and get attrs as a string
 // All attrs extracted into matches[1]
 // eslint-disable-next-line max-len
-const stringifyRegex = (regexp) => (regexp.toString().slice(1, -1));
+const stringifyRegex = (regexp) => regexp.toString().slice(1, -1);
 const SHORTCODE_ATTRS = stringifyRegex(
   /((?:[,\s]+(?:[a-z0-9\-_]+)=(?:(?:[a-z0-9\-_]+)|(?:\d+\.\d+)|(?:'[^']*')|(?:"[^"]*")))*)/,
 );
 // Used to extract individual items from above regexp
 // Each item matches[1] is key, and matches[2] || matches[3] || matches[4] || matches[5] is value
 // eslint-disable-next-line max-len
-const SHORTCODE_ATTR = /[,\s]+([a-z0-9\-_]+)=(?:([a-z0-9\-_]+)|(\d+\.\d+)|(?:'([^']*)')|(?:"([^"]*)"))/;
+const SHORTCODE_ATTR =
+  /[,\s]+([a-z0-9\-_]+)=(?:([a-z0-9\-_]+)|(\d+\.\d+)|(?:'([^']*)')|(?:"([^"]*)"))/;
 const SHORTCODE_OPEN = stringifyRegex(/\[%s/);
 const SHORTCODE_RIGHT_BRACKET = '\\]';
 const SHORTCODE_CLOSE = stringifyRegex(/\[\s*\/\s*%s\s*]/);
@@ -31,7 +32,6 @@ const SHORTCODE_SPACE = stringifyRegex(/\s*/);
  */
 
 const ShortcodeSerialiser = {
-
   /**
    * Matches the next occurance of a shortcode in a string.
    *
@@ -52,7 +52,10 @@ const ShortcodeSerialiser = {
     const open = i18n.sprintf(SHORTCODE_OPEN, name);
     let pattern = `${open}${SHORTCODE_ATTRS}${SHORTCODE_SPACE}${SHORTCODE_RIGHT_BRACKET}`;
     if (wrapped) {
-      pattern = `${pattern}${SHORTCODE_CONTENT}${i18n.sprintf(SHORTCODE_CLOSE, name)}`;
+      pattern = `${pattern}${SHORTCODE_CONTENT}${i18n.sprintf(
+        SHORTCODE_CLOSE,
+        name,
+      )}`;
     }
 
     // Get next match
@@ -119,10 +122,14 @@ const ShortcodeSerialiser = {
       ? { sep: ',', quote: '', replacer: /[^a-z0-9\-_.]/gi }
       : { sep: ' ', quote: '"', replacer: /"/g };
     const attrs = Object.entries(object.properties)
-      .map(([name, value]) => ((value)
-        ? `${rule.sep}${name}=${rule.quote}${`${value}`.replace(rule.replacer, '')}${rule.quote}`
-        : null
-      ))
+      .map(([name, value]) =>
+        value
+          ? `${rule.sep}${name}=${rule.quote}${`${value}`.replace(
+              rule.replacer,
+              '',
+            )}${rule.quote}`
+          : null,
+      )
       .filter((attr) => attr !== null)
       .join('');
 
@@ -148,15 +155,15 @@ const createHTMLSanitiser = () => {
 
 const sanitiseShortCodeProperties = (rawProperties) => {
   const sanitise = createHTMLSanitiser();
-  return Object.entries(rawProperties).reduce((props, [name, value]) => ({
-    ...props,
-    [name]: sanitise(value),
-  }), {});
+  return Object.entries(rawProperties).reduce(
+    (props, [name, value]) => ({
+      ...props,
+      [name]: sanitise(value),
+    }),
+    {},
+  );
 };
 
-export {
-  sanitiseShortCodeProperties,
-  createHTMLSanitiser,
-};
+export { sanitiseShortCodeProperties, createHTMLSanitiser };
 
 export default ShortcodeSerialiser;

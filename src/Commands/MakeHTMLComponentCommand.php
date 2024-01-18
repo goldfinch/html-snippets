@@ -29,7 +29,9 @@ class MakeHTMLComponentCommand extends GeneratorCommand
 
         // Nest template
 
-        $command = $this->getApplication()->find('make:html-component-template');
+        $command = $this->getApplication()->find(
+            'make:html-component-template',
+        );
 
         $arguments = [
             'name' => $nameInput,

@@ -51,7 +51,9 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
                 text: 'Sub menu item 1',
                 icon: 'unlock',
                 onAction() {
-                  editor.insertContent('&nbsp;<em>You clicked Sub menu item 1!</em>');
+                  editor.insertContent(
+                    '&nbsp;<em>You clicked Sub menu item 1!</em>',
+                  );
                 },
               },
               {
@@ -59,7 +61,9 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
                 text: 'Sub menu item 2',
                 icon: 'lock',
                 onAction() {
-                  editor.insertContent('&nbsp;<em>You clicked Sub menu item 2!</em>');
+                  editor.insertContent(
+                    '&nbsp;<em>You clicked Sub menu item 2!</em>',
+                  );
                 },
               },
             ];
@@ -70,7 +74,11 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
           text: 'Toggle menu item',
           onAction() {
             toggleState = !toggleState;
-            editor.insertContent(`&nbsp;<em>You toggled a menuitem ${toggleState ? 'on' : 'off'}</em>`);
+            editor.insertContent(
+              `&nbsp;<em>You toggled a menuitem ${
+                toggleState ? 'on' : 'off'
+              }</em>`,
+            );
           },
           onSetup(api) {
             api.setActive(toggleState);

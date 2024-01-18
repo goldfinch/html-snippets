@@ -1,14 +1,15 @@
 // Used to match outer regexp and get attrs as a string
 // All attrs extracted into matches[1]
 // eslint-disable-next-line max-len
-const stringifyRegex = (regexp) => (regexp.toString().slice(1, -1));
+const stringifyRegex = (regexp) => regexp.toString().slice(1, -1);
 const SHORTCODE_ATTRS = stringifyRegex(
   /((?:[,\s]+(?:[a-z0-9\-_]+)=(?:(?:[a-z0-9\-_]+)|(?:\d+\.\d+)|(?:'[^']*')|(?:"[^"]*")))*)/,
 );
 // Used to extract individual items from above regexp
 // Each item matches[1] is key, and matches[2] || matches[3] || matches[4] || matches[5] is value
 // eslint-disable-next-line max-len
-const SHORTCODE_ATTR = /[,\s]+([a-z0-9\-_]+)=(?:([a-z0-9\-_]+)|(\d+\.\d+)|(?:'([^']*)')|(?:"([^"]*)"))/;
+const SHORTCODE_ATTR =
+  /[,\s]+([a-z0-9\-_]+)=(?:([a-z0-9\-_]+)|(\d+\.\d+)|(?:'([^']*)')|(?:"([^"]*)"))/;
 const SHORTCODE_OPEN = stringifyRegex(/\[%s/);
 const SHORTCODE_RIGHT_BRACKET = '\\]';
 const SHORTCODE_CLOSE = stringifyRegex(/\[\s*\/\s*%s\s*]/);
@@ -19,7 +20,6 @@ const SHORTCODE_SPACE = stringifyRegex(/\s*/);
  */
 
 const ShortcodeSerialiser = {
-
   /**
    * Matches the next occurance of a shortcode in a string.
    *
@@ -40,7 +40,10 @@ const ShortcodeSerialiser = {
     const open = i18n.sprintf(SHORTCODE_OPEN, name);
     let pattern = `${open}${SHORTCODE_ATTRS}${SHORTCODE_SPACE}${SHORTCODE_RIGHT_BRACKET}`;
     if (wrapped) {
-      pattern = `${pattern}${SHORTCODE_CONTENT}${i18n.sprintf(SHORTCODE_CLOSE, name)}`;
+      pattern = `${pattern}${SHORTCODE_CONTENT}${i18n.sprintf(
+        SHORTCODE_CLOSE,
+        name,
+      )}`;
     }
 
     // Get next match
@@ -107,10 +110,14 @@ const ShortcodeSerialiser = {
       ? { sep: ',', quote: '', replacer: /[^a-z0-9\-_.]/gi }
       : { sep: ' ', quote: '"', replacer: /"/g };
     const attrs = Object.entries(object.properties)
-      .map(([name, value]) => ((value)
-        ? `${rule.sep}${name}=${rule.quote}${`${value}`.replace(rule.replacer, '')}${rule.quote}`
-        : null
-      ))
+      .map(([name, value]) =>
+        value
+          ? `${rule.sep}${name}=${rule.quote}${`${value}`.replace(
+              rule.replacer,
+              '',
+            )}${rule.quote}`
+          : null,
+      )
       .filter((attr) => attr !== null)
       .join('');
 
@@ -136,10 +143,13 @@ const createHTMLSanitiser = () => {
 
 const sanitiseShortCodeProperties = (rawProperties) => {
   const sanitise = createHTMLSanitiser();
-  return Object.entries(rawProperties).reduce((props, [name, value]) => ({
-    ...props,
-    [name]: sanitise(value),
-  }), {});
+  return Object.entries(rawProperties).reduce(
+    (props, [name, value]) => ({
+      ...props,
+      [name]: sanitise(value),
+    }),
+    {},
+  );
 };
 
 // (function() {
@@ -180,7 +190,10 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
       // anything else
     } else {
       // eslint-disable-next-line no-console
-      console.error({ error: 'Unexpected selection - expected embed', selectedNode: node });
+      console.error({
+        error: 'Unexpected selection - expected embed',
+        selectedNode: node,
+      });
     }
   });
 
@@ -189,30 +202,30 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
   console.log('INit');
 
   const page1Config = {
-  // console.log('cc',window.goldfinch_component)
+    // console.log('cc',window.goldfinch_component)
 
     title: 'Components',
     body: {
       type: 'panel',
       name: 'superpanel',
-      items: [{
-        type: 'htmlpanel',
-        html: '<p>Please, select component you would like to insert</p><p></p>',
-      },
+      items: [
+        {
+          type: 'htmlpanel',
+          html: '<p>Please, select component you would like to insert</p><p></p>',
+        },
 
-      {
-        type: 'listbox', // component type
-        name: 'component', // identifier
-        label: 'Component',
-        enabled: false, // enabled state
-        items: [
-          { text: '-', value: '-' },
-        ],
-      }],
+        {
+          type: 'listbox', // component type
+          name: 'component', // identifier
+          label: 'Component',
+          enabled: false, // enabled state
+          items: [{ text: '-', value: '-' }],
+        },
+      ],
     },
     initialData: {
-    // type: '1'
-    // type: null, // xhrLoadType()
+      // type: '1'
+      // type: null, // xhrLoadType()
     },
     buttons: [
       {
@@ -246,20 +259,20 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
     title: 'Redial Demo - Page 2',
     body: {
       type: 'panel',
-      items: [{
-        type: 'htmlpanel',
-        html: '<p>Please, select</p><p></p>',
-      },
+      items: [
+        {
+          type: 'htmlpanel',
+          html: '<p>Please, select</p><p></p>',
+        },
 
-      {
-        type: 'listbox', // component type
-        name: 'component', // identifier
-        label: 'Component',
-        enabled: false, // enabled state
-        items: [
-          { text: '-', value: '-' },
-        ],
-      }],
+        {
+          type: 'listbox', // component type
+          name: 'component', // identifier
+          label: 'Component',
+          enabled: false, // enabled state
+          items: [{ text: '-', value: '-' }],
+        },
+      ],
     },
     buttons: [
       {
@@ -293,10 +306,18 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
 
         // tinymce.activeEditor.execCommand('mceInsertContent', false, `<gf-component class="gf-component" data-class="${savedComponent}" data-id="${data.component}">[${result}]</gf-component>`);
 
-        const k1 = Object.keys(componentTypes).find((x) => componentTypes[x].value === savedComponent);
-        const k2 = Object.keys(componentObjects).find((x) => componentObjects[x].value === data.component);
+        const k1 = Object.keys(componentTypes).find(
+          (x) => componentTypes[x].value === savedComponent,
+        );
+        const k2 = Object.keys(componentObjects).find(
+          (x) => componentObjects[x].value === data.component,
+        );
 
-        tinymce.activeEditor.execCommand('mceInsertContent', false, `[htmlcomponentblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/htmlcomponentblock]`);
+        tinymce.activeEditor.execCommand(
+          'mceInsertContent',
+          false,
+          `[htmlcomponentblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/htmlcomponentblock]`,
+        );
 
         dialogApi.close();
       }
@@ -310,17 +331,23 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
   const xhrLoadType = async (dialog) => {
     const formData = new FormData();
     formData.append('name', editor.targetElm.getAttribute('name'));
-    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
+    formData.append(
+      'class',
+      editor.targetElm.getAttribute('data-based-on-class'),
+    );
     console.log(formData);
 
     try {
-      const response = await fetch('/api-html-components/component/components', {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': window.ss.config.SecurityID,
+      const response = await fetch(
+        '/api-html-components/component/components',
+        {
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': window.ss.config.SecurityID,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -363,17 +390,23 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
     console.log('!!!!!', dialog.getData());
     const formData = new FormData();
     formData.append('name', editor.targetElm.getAttribute('name'));
-    formData.append('class', editor.targetElm.getAttribute('data-based-on-class'));
+    formData.append(
+      'class',
+      editor.targetElm.getAttribute('data-based-on-class'),
+    );
     formData.append('component', savedComponent);
 
     try {
-      const response = await fetch('/api-html-components/component/componentobjects', {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': window.ss.config.SecurityID,
+      const response = await fetch(
+        '/api-html-components/component/componentobjects',
+        {
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': window.ss.config.SecurityID,
+          },
+          body: formData,
         },
-        body: formData,
-      });
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -428,7 +461,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
       console.log('start');
       console.log('ready');
 
-      const dialog = editor.windowManager.open(getInitialState());// page1Config());
+      const dialog = editor.windowManager.open(getInitialState()); // page1Config());
       dialog.block('Loading ...');
 
       //   dialog.setData({
@@ -463,53 +496,51 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
     const content = jQuery(`<div>${o.content}</div>`);
 
     // Transform [embed] shortcodes
-    content
-      .find(filter)
-      .each(function replaceWithShortCode() {
-        // Note: embed <div> contains placeholder <img>, and potentially caption <p>
-        const embed = jQuery(this);
-        // If placeholder has been removed, remove data-* properties and
-        // convert to non-shortcode div
-        // const placeholder = embed.find('img.placeholder');
-        // if (placeholder.length === 0) {
-        //   // embed.removeAttr('data-url');
-        //   embed.removeAttr('data-shortcode');
-        //   return;
-        // }
+    content.find(filter).each(function replaceWithShortCode() {
+      // Note: embed <div> contains placeholder <img>, and potentially caption <p>
+      const embed = jQuery(this);
+      // If placeholder has been removed, remove data-* properties and
+      // convert to non-shortcode div
+      // const placeholder = embed.find('img.placeholder');
+      // if (placeholder.length === 0) {
+      //   // embed.removeAttr('data-url');
+      //   embed.removeAttr('data-shortcode');
+      //   return;
+      // }
 
-        // Find nested element data
-        // const caption = embed.find('.caption').text();
-        // const width = parseInt(placeholder.attr('width'), 10);
-        // const height = parseInt(placeholder.attr('height'), 10);
-        const dataId = embed.data('id');
-        const dataClass = embed.data('class');
-        const dataN = embed.data('n');
-        const dataBn = embed.data('bn');
+      // Find nested element data
+      // const caption = embed.find('.caption').text();
+      // const width = parseInt(placeholder.attr('width'), 10);
+      // const height = parseInt(placeholder.attr('height'), 10);
+      const dataId = embed.data('id');
+      const dataClass = embed.data('class');
+      const dataN = embed.data('n');
+      const dataBn = embed.data('bn');
 
-        const properties = sanitiseShortCodeProperties({
-          // url,
-          // thumbnail: placeholder.prop('src'),
-          'data-id': dataId,
-          'data-class': dataClass,
-          'data-n': dataN,
-          'data-bn': dataBn,
-          class: embed.prop('class'),
-          // caption,
-        });
-
-        console.log('properties', properties);
-
-        const shortCode = ShortcodeSerialiser.serialise({
-          name: 'htmlcomponentblock',
-          properties,
-          wrapped: true,
-          content: '', // embed.html(),
-        });
-
-        console.log('shortCode', shortCode);
-
-        embed.replaceWith(shortCode);
+      const properties = sanitiseShortCodeProperties({
+        // url,
+        // thumbnail: placeholder.prop('src'),
+        'data-id': dataId,
+        'data-class': dataClass,
+        'data-n': dataN,
+        'data-bn': dataBn,
+        class: embed.prop('class'),
+        // caption,
       });
+
+      console.log('properties', properties);
+
+      const shortCode = ShortcodeSerialiser.serialise({
+        name: 'htmlcomponentblock',
+        properties,
+        wrapped: true,
+        content: '', // embed.html(),
+      });
+
+      console.log('shortCode', shortCode);
+
+      embed.replaceWith(shortCode);
+    });
 
     // eslint-disable-next-line no-param-reassign
     o.content = content.html();
@@ -527,7 +558,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
 
       // Add base div
       const base = jQuery('<div/>')
-      // .attr('data-url', data.url || match.content)
+        // .attr('data-url', data.url || match.content)
         .attr('data-id', data['data-id'])
         .attr('data-class', data['data-class'])
         .attr('data-n', data['data-n'])
@@ -562,7 +593,10 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
       // }
 
       // Inject into code
-      content = content.replace(match.original, (jQuery('<div/>').append(base).html()));
+      content = content.replace(
+        match.original,
+        jQuery('<div/>').append(base).html(),
+      );
 
       // Search for next match
       match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);

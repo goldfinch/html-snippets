@@ -4,7 +4,6 @@ import autoprefixer from 'autoprefixer';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig(({ command, mode, ssrBuild }) => ({
-
   resolve: {
     alias: {},
   },
@@ -20,11 +19,13 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
         assetFileNames: (assetInfo) => {
           if (assetInfo.name.endsWith('.css')) {
             return '[name][extname]';
-          } if (
+          }
+          if (
             assetInfo.name.match(/(\.(woff2?|eot|ttf|otf)|font\.svg)(\?.*)?$/)
           ) {
             return 'fonts/[name][extname]';
-          } if (assetInfo.name.match(/\.(jpg|png|svg)$/)) {
+          }
+          if (assetInfo.name.match(/\.(jpg|png|svg)$/)) {
             return 'images/[name][extname]';
           }
 
@@ -35,7 +36,6 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
   },
 
   plugins: [
-
     laravel({
       input: [
         'src/content-component.js',
@@ -56,11 +56,8 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
   ],
 
   css: {
-
     postcss: {
-      plugins: [
-        autoprefixer,
-      ],
+      plugins: [autoprefixer],
     },
   },
 }));
