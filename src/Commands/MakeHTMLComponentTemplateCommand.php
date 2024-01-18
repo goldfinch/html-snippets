@@ -3,7 +3,6 @@
 namespace Goldfinch\HTMLComponents\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Goldfinch\Taz\Services\InputOutput;
 use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:html-component-template')]

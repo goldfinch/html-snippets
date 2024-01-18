@@ -6,9 +6,12 @@
         "silverstripe"
     ],
     "license": "MIT",
-    "authors": [{
-        "name": "Artem Karasev"
-    }],
+    "authors": [
+        {
+            "name": "Art Karasev",
+            "email": "art.karasev@proton.me"
+        }
+    ],
     "require": {
         "php": ">=8.0",
         "silverstripe/framework": "^5.0",

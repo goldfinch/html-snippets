@@ -4,7 +4,6 @@ namespace Goldfinch\HTMLComponents\Admin;
 
 use SilverStripe\Admin\ModelAdmin;
 use JonoM\SomeConfig\SomeConfigAdmin;
-use SilverStripe\Forms\GridField\GridFieldConfig;
 use Goldfinch\HTMLComponents\Models\HTMLComponent;
 use Goldfinch\HTMLComponents\Config\HTMLComponentConfig;
 
@@ -25,52 +24,4 @@ class HTMLComponentsAdmin extends ModelAdmin
             'title'=> 'Settings',
         ],
     ];
-
-    // public $showImportForm = true;
-    // public $showSearchForm = true;
-    // private static $page_length = 30;
-
-    public function getList()
-    {
-        $list = parent::getList();
-
-        // ..
-
-        return $list;
-    }
-
-    protected function getGridFieldConfig(): GridFieldConfig
-    {
-        $config = parent::getGridFieldConfig();
-
-        // ..
-
-        return $config;
-    }
-
-    public function getSearchContext()
-    {
-        $context = parent::getSearchContext();
-
-        // ..
-
-        return $context;
-    }
-
-    public function getEditForm($id = null, $fields = null)
-    {
-        $form = parent::getEditForm($id, $fields);
-
-        // ..
-
-        return $form;
-    }
-
-    // public function getExportFields()
-    // {
-    //     return [
-    //         // 'Name' => 'Name',
-    //         // 'Category.Title' => 'Category'
-    //     ];
-    // }
 }

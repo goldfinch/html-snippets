@@ -1,23 +1,11 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import autoprefixer from "autoprefixer";
-// import * as path from 'path'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
-import initCfg from './app.config.js'
 
 export default defineConfig(({ command, mode, ssrBuild }) => {
 
-  const cfg = initCfg(command, mode, ssrBuild)
-
-  // const host = cfg.host;
-
-  // fs.writeFileSync('app.config.json', JSON.stringify(cfg.public));
-
   return {
-
-    esbuild: {
-      // charset: 'ascii' // fixing issue with unicode HTML entities in content: '';
-    },
 
     resolve: {
         alias: {}
@@ -44,11 +32,6 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
 
             return 'js/[name][extname]'
           },
-          // manualChunks(id) {
-          //     if (id.includes('node_modules')) {
-          //         return id.toString().split('node_modules/')[1].split('/')[0].toString();
-          //     }
-          // }
         }
       }
     },
@@ -62,7 +45,6 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
           'src/sass/tinymce.scss',
         ],
         refresh: true,
-        // buildDirectory: '',
       }),
 
       viteStaticCopy({
@@ -77,11 +59,6 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
 
     css: {
 
-      // preprocessorOptions: {
-      //   scss: {
-      //     additionalData: cfg.sassAdditionalData,
-      //   },
-      // },
       postcss: {
         plugins: [
           autoprefixer,

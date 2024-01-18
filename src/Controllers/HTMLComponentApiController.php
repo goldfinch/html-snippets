@@ -20,13 +20,6 @@ class HTMLComponentApiController extends Controller
         'objects',
     ];
 
-    protected function init()
-    {
-        parent::init();
-
-        // ..
-    }
-
     public function objects(HTTPRequest $request)
     {
         $this->authorized($request);

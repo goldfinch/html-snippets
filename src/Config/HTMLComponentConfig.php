@@ -13,13 +13,4 @@ class HTMLComponentConfig extends DataObject implements TemplateGlobalProvider
     private static $table_name = 'HTMLComponentConfig';
 
     private static $db = [];
-
-    public function getCMSFields()
-    {
-        $fields = parent::getCMSFields();
-
-        // ..
-
-        return $fields;
-    }
 }

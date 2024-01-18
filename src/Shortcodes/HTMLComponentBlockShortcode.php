@@ -2,22 +2,20 @@
 
 namespace Goldfinch\HTMLComponents\Shortcodes;
 
-use Embed\Http\NetworkException;
-use Embed\Http\RequestException;
-use Psr\SimpleCache\CacheInterface;
-use Psr\SimpleCache\InvalidArgumentException;
-use SilverStripe\Core\Convert;
-use SilverStripe\Core\Injector\Injector;
-use SilverStripe\ORM\ArrayList;
-use SilverStripe\ORM\FieldType\DBField;
-use SilverStripe\View\ArrayData;
-use SilverStripe\View\Embed\Embeddable;
 use SilverStripe\View\HTML;
-use SilverStripe\View\Parsers\ShortcodeHandler;
-use SilverStripe\View\Parsers\ShortcodeParser;
+use SilverStripe\Core\Convert;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\ArrayData;
 use SilverStripe\Control\Director;
+use Psr\SimpleCache\CacheInterface;
+use SilverStripe\View\Embed\Embeddable;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\View\Embed\EmbedContainer;
+use Psr\SimpleCache\InvalidArgumentException;
+use SilverStripe\View\Parsers\ShortcodeParser;
+use SilverStripe\View\Parsers\ShortcodeHandler;
 
 /**
  * Provider for the [embed] shortcode tag used by the embedding service
@@ -105,7 +103,7 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
         // try {
         //     // this will trigger a request/response which will then be cached within $embeddable
         //     $embeddable->getExtractor();
-        // } catch (NetworkException | RequestException $e) {
+        // } catch (Embed\Http\NetworkException | Embed\Http\RequestException $e) {
         //     $message = (Director::isDev())
         //         ? $e->getMessage()
         //         : _t(__CLASS__ . '.INVALID_URL', 'There was a problem loading the media.');
