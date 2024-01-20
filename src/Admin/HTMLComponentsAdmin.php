@@ -24,4 +24,17 @@ class HTMLComponentsAdmin extends ModelAdmin
             'title' => 'Settings',
         ],
     ];
+
+    public function getManagedModels()
+    {
+        $models = parent::getManagedModels();
+
+        $cfg = HTMLComponentConfig::current_config();
+
+        if (empty($cfg->config('db')->db)) {
+            unset($models[HTMLComponentConfig::class]);
+        }
+
+        return $models;
+    }
 }
