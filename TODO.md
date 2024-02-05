@@ -1,8 +1,8 @@
-app/_config/html-components.yml
+app/_config/html-snippets.yml
 ```
 ---
-Name: app-html-components
-After: "goldfinch/html-components"
+Name: app-html-snippets
+After: "goldfinch/html-snippets"
 ---
 # Page:
 #   allowed_html_components:

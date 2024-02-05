@@ -2,9 +2,9 @@
 {{ namespace }}
 use Goldfinch\Fielder\Fielder;
 use Goldfinch\Fielder\Traits\FielderTrait;
-use Goldfinch\HTMLComponents\Models\HTMLComponent;
+use Goldfinch\HTMLSnippets\Models\HTMLSnippet;
 
-class {{ class }}Component extends HTMLComponent
+class {{ class }}Component extends HTMLSnippet
 {
     // use FielderTrait;
 

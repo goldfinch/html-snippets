@@ -1,26 +1,26 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Admin;
+namespace Goldfinch\HTMLSnippets\Admin;
 
 use SilverStripe\Admin\ModelAdmin;
 use JonoM\SomeConfig\SomeConfigAdmin;
-use Goldfinch\HTMLComponents\Models\HTMLComponent;
-use Goldfinch\HTMLComponents\Configs\HTMLComponentConfig;
+use Goldfinch\HTMLSnippets\Models\HTMLSnippet;
+use Goldfinch\HTMLSnippets\Configs\HTMLSnippetConfig;
 
-class HTMLComponentsAdmin extends ModelAdmin
+class HTMLSnippetsAdmin extends ModelAdmin
 {
     use SomeConfigAdmin;
 
-    private static $url_segment = 'html-components';
-    private static $menu_title = 'HTML Components';
+    private static $url_segment = 'html-snippets';
+    private static $menu_title = 'HTML Snippets';
     private static $menu_icon_class = 'goldfinch-component-icon';
     // private static $menu_priority = -0.5;
 
     private static $managed_models = [
-        HTMLComponent::class => [
+        HTMLSnippet::class => [
             'title' => 'Segments',
         ],
-        HTMLComponentConfig::class => [
+        HTMLSnippetConfig::class => [
             'title' => 'Settings',
         ],
     ];
@@ -29,10 +29,10 @@ class HTMLComponentsAdmin extends ModelAdmin
     {
         $models = parent::getManagedModels();
 
-        $cfg = HTMLComponentConfig::current_config();
+        $cfg = HTMLSnippetConfig::current_config();
 
         if (empty($cfg->config('db')->db)) {
-            unset($models[HTMLComponentConfig::class]);
+            unset($models[HTMLSnippetConfig::class]);
         }
 
         return $models;

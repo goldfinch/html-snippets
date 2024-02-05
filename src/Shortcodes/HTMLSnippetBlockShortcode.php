@@ -1,6 +1,6 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Shortcodes;
+namespace Goldfinch\HTMLSnippets\Shortcodes;
 
 use SilverStripe\View\HTML;
 use SilverStripe\Core\Convert;
@@ -22,7 +22,7 @@ use SilverStripe\View\Parsers\ShortcodeHandler;
  * in the HTML Editor field.
  * Provides the html needed for the frontend and the editor field itself.
  */
-class HTMLComponentBlockShortcode implements ShortcodeHandler
+class HTMLSnippetBlockShortcode implements ShortcodeHandler
 {
     use Configurable;
 
@@ -33,7 +33,7 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
      */
     public static function get_shortcodes()
     {
-        return ['htmlcomponentblock'];
+        return ['htmlsnippetblock'];
     }
 
     /**

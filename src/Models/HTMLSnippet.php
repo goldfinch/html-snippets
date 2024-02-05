@@ -1,6 +1,6 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Models;
+namespace Goldfinch\HTMLSnippets\Models;
 
 use Illuminate\Support\Str;
 use SilverStripe\ORM\DataObject;
@@ -9,11 +9,11 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 
-class HTMLComponent extends DataObject
+class HTMLSnippet extends DataObject
 {
-    private static $table_name = 'HTMLComponent';
-    private static $singular_name = 'html component';
-    private static $plural_name = 'html components';
+    private static $table_name = 'HTMLSnippet';
+    private static $singular_name = 'html snippet';
+    private static $plural_name = 'html snippets';
 
     private static $db = [
         'Component_Name' => 'Varchar',
@@ -30,7 +30,7 @@ class HTMLComponent extends DataObject
     ];
 
     private static $belongs_to = [
-        'Component' => HTMLComponent::class . '.Component',
+        'Component' => HTMLSnippet::class . '.Component',
     ];
 
     public function getCMSFields()

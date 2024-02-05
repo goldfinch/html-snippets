@@ -1,6 +1,6 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Extensions;
+namespace Goldfinch\HTMLSnippets\Extensions;
 
 use SilverStripe\Core\Extension;
 use SilverStripe\Core\Config\Config;
@@ -28,19 +28,19 @@ class HTMLEditorExtension extends Extension
 
                 $enabledPlugins = $field->getEditorConfig()->getPlugins();
 
-                if (!array_key_exists('htmlcomponents', $enabledPlugins)) {
+                if (!array_key_exists('htmlsnippets', $enabledPlugins)) {
                     $goldfinch_components = ModuleLoader::inst()
                         ->getManifest()
-                        ->getModule('goldfinch/html-components');
+                        ->getModule('goldfinch/html-snippets');
 
                     $cfg = $field->getEditorConfig();
 
                     $cfg->enablePlugins([
-                        'htmlcomponents' => $goldfinch_components->getResource(
+                        'htmlsnippets' => $goldfinch_components->getResource(
                             'client/dist/content-component.js',
                         ),
                     ]);
-                    $cfg->addButtonsToLine(1, ['htmlcomponents']);
+                    $cfg->addButtonsToLine(1, ['htmlsnippets']);
                 }
             }
         }

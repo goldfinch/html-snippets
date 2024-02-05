@@ -17,7 +17,7 @@ const useFetch = async function (url, formData) {
   return response.json();
 };
 
-tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
+tinymce.PluginManager.add('htmlsnippets', (editor, url) => {
   let selectedComponent;
   let componentTypes;
   let componentObjects;
@@ -132,7 +132,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
         tinymce.activeEditor.execCommand(
           'mceInsertContent',
           false,
-          `[htmlcomponentblock class="gf-component" data-class="${selectedComponent}" data-id="${data.component}" data-bn="${componentTypes[ctKey].text}" data-n="${componentObjects[coKey].text}"].[/htmlcomponentblock]`,
+          `[htmlsnippetblock class="gf-component" data-class="${selectedComponent}" data-id="${data.component}" data-bn="${componentTypes[ctKey].text}" data-n="${componentObjects[coKey].text}"].[/htmlsnippetblock]`,
         );
 
         dialogApi.close();
@@ -150,7 +150,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
 
     try {
       const data = await useFetch(
-        '/api-html-components/component/types',
+        '/api-html-snippets/component/types',
         formData,
       );
 
@@ -179,7 +179,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
 
     try {
       const data = await useFetch(
-        '/api-html-components/component/objects',
+        '/api-html-snippets/component/objects',
         formData,
       );
 
@@ -194,7 +194,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     } catch (error) {}
   };
 
-  editor.ui.registry.addButton('htmlcomponents', {
+  editor.ui.registry.addButton('htmlsnippets', {
     icon: 'sharpen',
     onAction: async () => {
       const dialogApi = editor.windowManager.open(window1);
@@ -205,7 +205,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     },
   });
 
-  const filter = 'div[data-shortcode="htmlcomponentblock"]';
+  const filter = 'div[data-shortcode="htmlsnippetblock"]';
 
   editor.ui.registry.addButton('ccdelete', {
     tooltip: 'Delete content block',
@@ -213,7 +213,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
     onAction: () => editor.execCommand('cc-delete'),
   });
 
-  editor.ui.registry.addContextToolbar('htmlcomponents', {
+  editor.ui.registry.addContextToolbar('htmlsnippets', {
     predicate: (node) => editor.dom.is(node, filter),
     position: 'node',
     scope: 'node',
@@ -241,7 +241,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
       });
 
       const shortCode = ShortcodeSerialiser.serialise({
-        name: 'htmlcomponentblock',
+        name: 'htmlsnippetblock',
         properties,
         wrapped: true,
         content: '', // embed.html(),
@@ -256,7 +256,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
   editor.on('BeforeSetContent', (o) => {
     let { content } = o;
     // Transform [embed] tag
-    let match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
+    let match = ShortcodeSerialiser.match('htmlsnippetblock', true, content);
 
     while (match) {
       const data = match.properties;
@@ -267,11 +267,11 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
         .attr('data-class', data['data-class'])
         .attr('data-n', data['data-n'])
         .attr('data-bn', data['data-bn'])
-        .attr('data-shortcode', 'htmlcomponentblock')
+        .attr('data-shortcode', 'htmlsnippetblock')
         .addClass(data.class);
 
       base.html(
-        '<img src="/_resources/vendor/goldfinch/html-components/client/dist/images/component.svg" width="">',
+        '<img src="/_resources/vendor/goldfinch/html-snippets/client/dist/images/component.svg" width="">',
       );
 
       content = content.replace(
@@ -279,7 +279,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
         jQuery('<div/>').append(base).html(),
       );
 
-      match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
+      match = ShortcodeSerialiser.match('htmlsnippetblock', true, content);
     }
 
     o.content = content;
@@ -288,7 +288,7 @@ tinymce.PluginManager.add('htmlcomponents', (editor, url) => {
   return {
     getMetadata: () => ({
       name: 'Goldfinch Components',
-      url: 'https://github.com/goldfinch/html-components',
+      url: 'https://github.com/goldfinch/html-snippets',
     }),
   };
 });

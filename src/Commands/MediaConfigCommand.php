@@ -1,16 +1,16 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Commands;
+namespace Goldfinch\HTMLSnippets\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 
-#[AsCommand(name: 'vendor:html-components:config')]
+#[AsCommand(name: 'vendor:html-snippets:config')]
 class MediaConfigCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'vendor:html-components:config';
+    protected static $defaultName = 'vendor:html-snippets:config';
 
-    protected $description = 'Create HTML components YML config';
+    protected $description = 'Create HTML snippets YML config';
 
     protected $path = 'app/_config';
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Controllers;
+namespace Goldfinch\HTMLSnippets\Controllers;
 
 use Illuminate\Support\Str;
 use SilverStripe\Control\Controller;
@@ -8,7 +8,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Security\SecurityToken;
 
-class HTMLComponentApiController extends Controller
+class HTMLSnippetApiController extends Controller
 {
     private static $url_handlers = [
         'POST types' => 'types',

@@ -1,9 +1,9 @@
 ---
-Name: goldfinch-html-components-routes
+Name: goldfinch-html-snippets-routes
 After:
   - "#rootroutes"
   - "#coreroutes"
 ---
 SilverStripe\Control\Director:
   rules:
-    "api-html-components/component": Goldfinch\HTMLComponents\Controllers\HTMLComponentApiController
+    "api-html-snippets/component": Goldfinch\HTMLSnippets\Controllers\HTMLSnippetApiController

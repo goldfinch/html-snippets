@@ -1,6 +1,6 @@
 <?php
 
-namespace Goldfinch\HTMLComponents\Commands;
+namespace Goldfinch\HTMLSnippets\Commands;
 
 use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Services\InputOutput;
@@ -8,18 +8,18 @@ use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 
-#[AsCommand(name: 'make:html-component')]
-class MakeHTMLComponentCommand extends GeneratorCommand
+#[AsCommand(name: 'make:html-snippet')]
+class MakeHTMLSnippetCommand extends GeneratorCommand
 {
-    protected static $defaultName = 'make:html-component';
+    protected static $defaultName = 'make:html-snippet';
 
-    protected $description = 'Create new HTML Component';
+    protected $description = 'Create new HTML Snippet';
 
     protected $path = 'app/src/Components';
 
-    protected $type = 'html-component';
+    protected $type = 'html-snippet';
 
-    protected $stub = './stubs/html-component.stub';
+    protected $stub = './stubs/html-snippet.stub';
 
     protected $prefix = 'Component';
 
@@ -73,7 +73,7 @@ class MakeHTMLComponentCommand extends GeneratorCommand
         $nameInput = $this->getAttrName($input);
 
         $command = $this->getApplication()->find(
-            'make:html-component-template',
+            'make:html-snippet-template',
         );
 
         $arguments = [
@@ -88,10 +88,10 @@ class MakeHTMLComponentCommand extends GeneratorCommand
         if (!$this->setComponentInConfig($className, $fieldName, $namespaceClass)) {
             // create config
 
-            $command = $this->getApplication()->find('vendor:html-components:config');
+            $command = $this->getApplication()->find('vendor:html-snippets:config');
 
             $arguments = [
-                'name' => 'html-components',
+                'name' => 'html-snippets',
             ];
 
             $greetInput = new ArrayInput($arguments);
@@ -107,7 +107,7 @@ class MakeHTMLComponentCommand extends GeneratorCommand
     {
         $rewritten = false;
 
-        $htmlModelLine = 'Goldfinch\HTMLComponents\Models\HTMLComponent:';
+        $htmlModelLine = 'Goldfinch\HTMLSnippets\Models\HTMLSnippet:';
 
         $finder = new Finder();
         $files = $finder->in(BASE_PATH . '/app/_config')->files()->contains([$htmlModelLine, 'html_component_model']);

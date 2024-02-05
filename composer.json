@@ -1,8 +1,8 @@
 {
-    "name": "goldfinch/html-components",
+    "name": "goldfinch/html-snippets",
     "description": "",
     "type": "silverstripe-vendormodule",
-    "keywords": ["silverstripe"],
+    "keywords": ["silverstripe", "html-snippets", "html-blocks"],
     "license": "MIT",
     "authors": [
         {
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Goldfinch\\HTMLComponents\\": "src/"
+            "Goldfinch\\HTMLSnippets\\": "src/"
         }
     },
     "extra": {

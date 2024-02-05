@@ -316,7 +316,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
         tinymce.activeEditor.execCommand(
           'mceInsertContent',
           false,
-          `[htmlcomponentblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/htmlcomponentblock]`,
+          `[htmlsnippetblock class="gf-component" data-class="${savedComponent}" data-id="${data.component}" data-bn="${componentTypes[k1].text}" data-n="${componentObjects[k2].text}"].[/htmlsnippetblock]`,
         );
 
         dialogApi.close();
@@ -339,7 +339,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
 
     try {
       const response = await fetch(
-        '/api-html-components/component/components',
+        '/api-html-snippets/component/components',
         {
           method: 'POST',
           headers: {
@@ -398,7 +398,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
 
     try {
       const response = await fetch(
-        '/api-html-components/component/componentobjects',
+        '/api-html-snippets/component/componentobjects',
         {
           method: 'POST',
           headers: {
@@ -477,7 +477,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
     },
   });
 
-  const filter = 'div[data-shortcode="htmlcomponentblock"]';
+  const filter = 'div[data-shortcode="htmlsnippetblock"]';
 
   editor.ui.registry.addButton('gfcdelete', {
     tooltip: 'Delete content block',
@@ -531,7 +531,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
       console.log('properties', properties);
 
       const shortCode = ShortcodeSerialiser.serialise({
-        name: 'htmlcomponentblock',
+        name: 'htmlsnippetblock',
         properties,
         wrapped: true,
         content: '', // embed.html(),
@@ -551,7 +551,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
     let { content } = o;
     console.log('before set content', content);
     // Transform [embed] tag
-    let match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
+    let match = ShortcodeSerialiser.match('htmlsnippetblock', true, content);
     while (match) {
       const data = match.properties;
       console.log('data', data, match, data['data-id']);
@@ -563,9 +563,9 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
         .attr('data-class', data['data-class'])
         .attr('data-n', data['data-n'])
         .attr('data-bn', data['data-bn'])
-        .attr('data-shortcode', 'htmlcomponentblock')
+        .attr('data-shortcode', 'htmlsnippetblock')
         .addClass(data.class);
-      // .addClass('ss-htmleditorfield-file htmlcomponentblock');
+      // .addClass('ss-htmleditorfield-file htmlsnippetblock');
 
       // Add placeholder
       // const placeholder = jQuery('<img />')
@@ -599,7 +599,7 @@ tinymce.PluginManager.add('customplugin', (editor, url) => {
       );
 
       // Search for next match
-      match = ShortcodeSerialiser.match('htmlcomponentblock', true, content);
+      match = ShortcodeSerialiser.match('htmlsnippetblock', true, content);
     }
 
     // eslint-disable-next-line no-param-reassign
