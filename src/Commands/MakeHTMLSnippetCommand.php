@@ -110,7 +110,7 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
         $htmlModelLine = 'Goldfinch\HTMLSnippets\Models\HTMLSnippet:';
 
         $finder = new Finder();
-        $files = $finder->in(BASE_PATH . '/app/_config')->files()->contains([$htmlModelLine, 'html_component_model']);
+        $files = $finder->in(BASE_PATH . '/app/_config')->files()->contains([$htmlModelLine, 'html_snippet_model']);
 
         foreach ($files as $file) {
 
@@ -121,7 +121,7 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
 
             $newContent = $this->updateYmal(
                 $file->getContents(),
-                $className . '.allowed_html_components.' . $fieldName,
+                $className . '.allowed_html_snippets.' . $fieldName,
                 $componentName,
                 $htmlModelLine,
             );

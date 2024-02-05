@@ -77,11 +77,11 @@ class HTMLSnippetApiController extends Controller
     {
         $cfg = Config::inst()->get($data['class']);
 
-        if (isset($cfg['allowed_html_components'])) {
-            $allowed_html_components = $cfg['allowed_html_components'];
+        if (isset($cfg['allowed_html_snippets'])) {
+            $allowed_html_snippets = $cfg['allowed_html_snippets'];
 
-            if (isset($allowed_html_components[$data['name']])) {
-                $components = $allowed_html_components[$data['name']];
+            if (isset($allowed_html_snippets[$data['name']])) {
+                $components = $allowed_html_snippets[$data['name']];
 
                 if (count($components)) {
                     return $components;

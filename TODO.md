@@ -5,13 +5,13 @@ Name: app-html-snippets
 After: "goldfinch/html-snippets"
 ---
 # Page:
-#   allowed_html_components:
+#   allowed_html_snippets:
 #     AdvancedText:
 #       - App\Components\MyCustomComponent..
 #     Content:
 #       - App\Components\MyCustomComponent..
 # App\Models\MyModel..:
-#   allowed_html_components:
+#   allowed_html_snippets:
 #     Text:
 #       - App\Components\MyCustomComponent..
 #       - App\Components\MyOtherCustomComponent..
