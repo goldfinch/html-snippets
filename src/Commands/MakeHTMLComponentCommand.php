@@ -121,55 +121,14 @@ class MakeHTMLComponentCommand extends GeneratorCommand
 
             $newContent = $this->updateYmal(
                 $file->getContents(),
-                [$className, 'allowed_html_components', $fieldName],
-                $componentName
+                $className . '.allowed_html_components.' . $fieldName,
+                $componentName,
+                $htmlModelLine,
             );
 
             file_put_contents($file->getPathname(), $newContent);
 
             $rewritten = true;
-
-
-            // if (strpos($file->getContents(), $className . ':') !== false) {
-
-            //     if (strpos($file->getContents(), 'allowed_html_components:') !== false) {
-
-            //         $classSubLines = $className . ':' . PHP_EOL . '  allowed_html_components:' . PHP_EOL;
-
-            //         // $newContent = str_replace(
-            //         //     $classSubLines,
-            //         //     $classSubLines . '    '.$fieldName.':'.PHP_EOL.'      - '. $componentName . PHP_EOL,
-            //         //     $file->getContents()
-            //         // );
-
-            //         $newContent = $this->replaceMultiLines(
-            //             $file->getPathname(),
-            //             [
-            //                 $className . ':',
-            //                 'allowed_html_components:',
-            //                 $fieldName,
-            //             ],
-            //             $classSubLines . '    '.$fieldName.':'.PHP_EOL.'      - '. $componentName . PHP_EOL,
-            //         );
-
-            //         file_put_contents($file->getPathname(), $newContent);
-
-            //         $rewritten = true;
-
-            //     } else {
-            //         // add new field to existed class
-            //     }
-            // } else {
-            //     // add class
-            //     $newContent = $this->addToLine(
-            //         $file->getPathname(),
-            //         $htmlModelLine, $htmlModelLine . PHP_EOL . '    '.$className.':'.PHP_EOL.'      '.$fieldName.':'.PHP_EOL.'      - '. $componentName . PHP_EOL . PHP_EOL,
-            //     );
-
-            //     file_put_contents($file->getPathname(), $newContent);
-
-            //     $rewritten = true;
-            // }
         }
 
         return $rewritten;
