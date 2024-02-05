@@ -19,12 +19,12 @@ class HTMLEditorExtension extends Extension
 
         $field->setAttribute('data-based-on-class', $basedOnClass);
 
-        if (isset($config['allowed_components'])) {
-            $allowed_components = $config['allowed_components'];
+        if (isset($config['allowed_html_components'])) {
+            $allowed_html_components = $config['allowed_html_components'];
 
-            if (isset($allowed_components[$field->getName()])) {
+            if (isset($allowed_html_components[$field->getName()])) {
                 // ? $fieldComponents could be used for initial load (window1)
-                $fieldComponents = $allowed_components[$field->getName()];
+                $fieldComponents = $allowed_html_components[$field->getName()];
 
                 $enabledPlugins = $field->getEditorConfig()->getPlugins();
 

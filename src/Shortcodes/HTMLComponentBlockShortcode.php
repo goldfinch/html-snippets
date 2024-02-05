@@ -135,15 +135,16 @@ class HTMLComponentBlockShortcode implements ShortcodeHandler
         //     } catch (InvalidArgumentException $e) {
         //     }
         // }
+        if (class_exists($arguments['data-class'])) {
+            $component = $arguments['data-class']::get_by_id($arguments['data-id']);
 
-        $component = $arguments['data-class']::get_by_id($arguments['data-id']);
-
-        if ($component->Component_Visibility) {
-            return $component->renderWith(
-                'Components/HTML/' . class_basename($component),
-            );
-        } else {
-            return;
+            if ($component->Component_Visibility) {
+                return $component->renderWith(
+                    'Components/HTML/' . class_basename($component),
+                );
+            } else {
+                return;
+            }
         }
     }
 

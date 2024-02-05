@@ -12,7 +12,7 @@ class MakeHTMLComponentTemplateCommand extends GeneratorCommand
 
     protected $description = 'Create new HTML Component template';
 
-    protected $path = 'themes/main/templates/Components/HTML';
+    protected $path = 'themes/[theme]/templates/Components/HTML';
 
     protected $type = 'html-component-template';
 

@@ -1,0 +1,6 @@
+---
+Name: app-{{ class }}
+After: "goldfinch/html-components"
+---
+Goldfinch\HTMLComponents\Models\HTMLComponent:
+    html_component_model: true
