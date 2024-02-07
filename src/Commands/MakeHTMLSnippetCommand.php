@@ -19,7 +19,7 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
 
     protected $stub = './stubs/html-snippet.stub';
 
-    protected $prefix = 'Component';
+    protected $suffix = 'Component';
 
     protected function execute($input, $output): int
     {
@@ -27,8 +27,8 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
             return Command::FAILURE;
         }
 
-        $className = $this->askClassNameQuestion('What [class name] this snippet need to be assigned to (eg: Page, App/Pages/Page)', $input, $output);
-        $fieldName = $this->askClassNameQuestion('What [HTMLText field name] this snippet need to be assigned to (eg: Text, Content)', $input, $output);
+        $className = $this->askClassNameQuestion('What [class name] this snippet need to be assigned to? (eg: Page, App/Pages/Page)', $input, $output);
+        $fieldName = $this->askClassNameQuestion('What [HTMLText field name] this snippet need to be assigned to? (eg: Text, Content)', $input, $output);
 
         $nameInput = $this->getAttrName($input);
 

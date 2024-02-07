@@ -17,7 +17,7 @@ class MakeHTMLSnippetTemplateCommand extends GeneratorCommand
 
     protected $stub = './stubs/html-snippet-template.stub';
 
-    protected $prefix = 'Component';
+    protected $suffix = 'Component';
 
     protected $extension = '.ss';
 }
