@@ -2,5 +2,3 @@
 Name: app-{{ class }}
 After: "goldfinch/html-snippets"
 ---
-Goldfinch\HTMLSnippets\Models\HTMLSnippet:
-    html_snippet_model: true

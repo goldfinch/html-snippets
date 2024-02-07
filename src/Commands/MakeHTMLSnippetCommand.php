@@ -2,8 +2,6 @@
 
 namespace Goldfinch\HTMLSnippets\Commands;
 
-use Symfony\Component\Finder\Finder;
-use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -25,106 +23,38 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        parent::execute($input, $output);
+        if (parent::execute($input, $output) === false) {
+            return Command::FAILURE;
+        }
 
-        $io = new InputOutput($input, $output);
-
-        $className = $io->question('Class name that will use this component (eg Page, App/Models/ProjectItem)', null, function ($answer) use ($io) {
-
-            if (!is_string($answer) || $answer === null) {
-                throw new \RuntimeException(
-                    'Invalid name'
-                );
-            } else if (strlen($answer) < 2) {
-                throw new \RuntimeException(
-                    'Too short name'
-                );
-            } else if(!preg_match('/^([A-z0-9\_]+)$/', $answer)) {
-                throw new \RuntimeException(
-                    'Name can contains letter, numbers and underscore'
-                );
-            }
-
-            return $answer;
-        });
-
-        $fieldName = $io->question('Field name (HTMLText) that will use this component (eg Content, Text)', null, function ($answer) use ($io) {
-
-            if (!is_string($answer) || $answer === null) {
-                throw new \RuntimeException(
-                    'Invalid name'
-                );
-            } else if (strlen($answer) < 2) {
-                throw new \RuntimeException(
-                    'Too short name'
-                );
-            } else if(!preg_match('/^([A-z0-9\_]+)$/', $answer)) {
-                throw new \RuntimeException(
-                    'Name can contains letter, numbers and underscore'
-                );
-            }
-
-            return $answer;
-        });
-
-        $namespaceClass = '{{namespace_class}}';
-        $this->buildStr($namespaceClass, $input->getArgument('name'));
+        $className = $this->askClassNameQuestion('What [class name] this snippet need to be assigned to (eg: Page, App/Pages/Page)', $input, $output);
+        $fieldName = $this->askClassNameQuestion('What [HTMLText field name] this snippet need to be assigned to (eg: Text, Content)', $input, $output);
 
         $nameInput = $this->getAttrName($input);
 
-        $command = $this->getApplication()->find(
-            'make:html-snippet-template',
-        );
+        // create page template
+        $command = $this->getApplication()->find('make:html-snippet-template');
         $command->run(new ArrayInput(['name' => $nameInput]), $output);
 
-        // config
+        // find config
+        $config = $this->findYamlConfigFileByName('app-html-snippets');
 
-        if (!$this->setComponentInConfig($className, $fieldName, $namespaceClass)) {
-            // create config
+        // create new config if not exists
+        if (!$config) {
 
             $command = $this->getApplication()->find('vendor:html-snippets:config');
+            $command->run(new ArrayInput(['name' => 'html-snippets']), $output);
 
-            $arguments = [
-                'name' => 'html-snippets',
-            ];
-
-            $greetInput = new ArrayInput($arguments);
-            $returnCode = $command->run($greetInput, $output);
-
-            $this->setComponentInConfig($className, $fieldName, $namespaceClass);
+            $config = $this->findYamlConfigFileByName('app-html-snippets');
         }
+
+        // update config
+        $this->updateYamlConfig(
+            $config,
+            $className . '.allowed_html_snippets.' . $fieldName,
+            $this->getNamespaceClass($input),
+        );
 
         return Command::SUCCESS;
-    }
-
-    private function setComponentInConfig($className, $fieldName, $componentName)
-    {
-        $rewritten = false;
-
-        $htmlModelLine = 'Goldfinch\HTMLSnippets\Models\HTMLSnippet:';
-
-        $finder = new Finder();
-        $files = $finder->in(BASE_PATH . '/app/_config')->files()->contains([$htmlModelLine, 'html_snippet_model']);
-
-        foreach ($files as $file) {
-
-            // stop after first replacement
-            if ($rewritten) {
-                break;
-            }
-
-            $newContent = $this->updateYaml(
-                $file->getContents(),
-                $className . '.allowed_html_snippets.' . $fieldName,
-                $componentName,
-                $htmlModelLine,
-            );
-
-            file_put_contents($file->getPathname(), $newContent);
-
-            $rewritten = true;
-        }
-
-        return $rewritten;
     }
 }

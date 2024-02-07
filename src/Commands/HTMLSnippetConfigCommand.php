@@ -5,7 +5,7 @@ namespace Goldfinch\HTMLSnippets\Commands;
 use Goldfinch\Taz\Console\GeneratorCommand;
 
 #[AsCommand(name: 'vendor:html-snippets:config')]
-class MediaConfigCommand extends GeneratorCommand
+class HTMLSnippetConfigCommand extends GeneratorCommand
 {
     protected static $defaultName = 'vendor:html-snippets:config';
 
