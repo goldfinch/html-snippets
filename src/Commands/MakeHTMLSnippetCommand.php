@@ -75,13 +75,7 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
         $command = $this->getApplication()->find(
             'make:html-snippet-template',
         );
-
-        $arguments = [
-            'name' => $nameInput,
-        ];
-
-        $greetInput = new ArrayInput($arguments);
-        $returnCode = $command->run($greetInput, $output);
+        $command->run(new ArrayInput(['name' => $nameInput]), $output);
 
         // config
 
@@ -119,7 +113,7 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
                 break;
             }
 
-            $newContent = $this->updateYmal(
+            $newContent = $this->updateYaml(
                 $file->getContents(),
                 $className . '.allowed_html_snippets.' . $fieldName,
                 $componentName,

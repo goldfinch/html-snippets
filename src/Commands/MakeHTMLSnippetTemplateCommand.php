@@ -3,7 +3,6 @@
 namespace Goldfinch\HTMLSnippets\Commands;
 
 use Goldfinch\Taz\Console\GeneratorCommand;
-use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(name: 'make:html-snippet-template')]
 class MakeHTMLSnippetTemplateCommand extends GeneratorCommand
@@ -21,11 +20,4 @@ class MakeHTMLSnippetTemplateCommand extends GeneratorCommand
     protected $prefix = 'Component';
 
     protected $extension = '.ss';
-
-    protected function execute($input, $output): int
-    {
-        parent::execute($input, $output);
-
-        return Command::SUCCESS;
-    }
 }
