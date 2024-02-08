@@ -1,4 +1,0 @@
----
-Name: app-{{ class }}
-After: "goldfinch/html-snippets"
----

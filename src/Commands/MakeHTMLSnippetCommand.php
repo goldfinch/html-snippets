@@ -42,8 +42,13 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
         // create new config if not exists
         if (!$config) {
 
-            $command = $this->getApplication()->find('vendor:html-snippets:config');
-            $command->run(new ArrayInput(['name' => 'html-snippets']), $output);
+            $command = $this->getApplication()->find('make:config');
+            $command->run(new ArrayInput([
+                'name' => 'html-snippets',
+                '--plain' => true,
+                '--after' => 'goldfinch/html-snippets',
+                '--nameprefix' => 'app-',
+            ]), $output);
 
             $config = $this->findYamlConfigFileByName('app-html-snippets');
         }
