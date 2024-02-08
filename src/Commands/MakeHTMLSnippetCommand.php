@@ -27,7 +27,7 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
             return Command::FAILURE;
         }
 
-        $className = $this->askClassNameQuestion('What [class name] this snippet need to be assigned to? (eg: Page, App/Pages/Page)', $input, $output);
+        $className = $this->askClassNameQuestion('What [class name] this snippet need to be assigned to? (eg: Page, App\Pages\Page)', $input, $output);
         $fieldName = $this->askClassNameQuestion('What [HTMLText field name] this snippet need to be assigned to? (eg: Text, Content)', $input, $output);
 
         $nameInput = $this->getAttrName($input);
