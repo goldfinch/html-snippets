@@ -14,7 +14,7 @@ class {{ class }}Component extends HTMLSnippet
 
     private static $db = [];
 
-    // public function fielder(Fielder $fielder)
+    // public function fielder(Fielder $fielder): void
     // {
     //     // ..
     // }
