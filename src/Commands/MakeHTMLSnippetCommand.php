@@ -57,7 +57,7 @@ class MakeHTMLSnippetCommand extends GeneratorCommand
         $this->updateYamlConfig(
             $config,
             $className . '.allowed_html_snippets.' . $fieldName,
-            $this->getNamespaceClass($input),
+            [$this->getNamespaceClass($input)],
         );
 
         return Command::SUCCESS;
