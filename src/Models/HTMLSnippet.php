@@ -12,8 +12,8 @@ use SilverStripe\Forms\DropdownField;
 class HTMLSnippet extends DataObject
 {
     private static $table_name = 'HTMLSnippet';
-    private static $singular_name = 'html snippet';
-    private static $plural_name = 'html snippets';
+    private static $singular_name = 'HTML Snippet';
+    private static $plural_name = 'HTML Snippets';
 
     private static $db = [
         'Component_Name' => 'Varchar',
