@@ -1,6 +1,6 @@
 {
     "name": "goldfinch/html-snippets",
-    "description": "",
+    "description": "Create custom HTML snippets and use them across your project via TinyMCE plugin. Easy to manage and customize as many snippets as you need.",
     "type": "silverstripe-vendormodule",
     "keywords": ["silverstripe", "html-snippets", "html-blocks"],
     "license": "MIT",
