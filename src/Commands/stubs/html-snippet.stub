@@ -1,21 +1,23 @@
 <?php
 {{ namespace }}
-use Goldfinch\Fielder\Fielder;
-use Goldfinch\Fielder\Traits\FielderTrait;
 use Goldfinch\HTMLSnippets\Models\HTMLSnippet;
 
 class {{ class }}Component extends HTMLSnippet
 {
-    // use FielderTrait;
-
-    private static $table_name = '{{ class }}';
+    // private static $table_name = '{{ class }}';
     private static $singular_name = '{{ class_singular_lowercase }}';
     private static $plural_name = '{{ class_plural_lowercase }}';
 
     private static $db = [];
 
-    // public function fielder(Fielder $fielder): void
-    // {
-    //     // ..
-    // }
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+
+        // $fielder = $fields->fielder($this);
+
+        // ..
+
+        return $fields;
+    }
 }
