@@ -14,7 +14,8 @@ class {{ class }}Component extends HTMLSnippet
     {
         $fields = parent::getCMSFields();
 
-        // $fielder = $this->intFielder($fields)->getFielder();
+        // $fields = parent::getCMSFields()->initFielder($this);
+        // $fielder = $fields->getFielder();
 
         // ..
 
