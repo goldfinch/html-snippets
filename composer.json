@@ -14,6 +14,7 @@
         "php": ">=8.0",
         "silverstripe/framework": "^5.0",
         "silverstripe/admin": "^2.0",
+        "goldfinch/fielder": "^2.0",
         "goldfinch/taz": "^2.0",
         "jonom/silverstripe-someconfig": "^1.0",
         "laravel/helpers": "^1.6"

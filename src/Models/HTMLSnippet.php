@@ -35,12 +35,15 @@ class HTMLSnippet extends DataObject
 
     public function getCMSFields()
     {
-        $fields = parent::getCMSFields();
+        $fields = parent::getCMSFields()->initFielder($this);
 
-        $fields->addFieldsToTab('Root.Settings', [
-            TextField::create('Component_Name', 'Component name'),
+        $fielder = $fields->getFielder();
 
-            CheckboxField::create('Component_Visibility', 'Visibility'),
+        $fielder->required(['Component_Name']);
+
+        $fielder->toTab('Root.Settings', [
+            $fielder->string('Component_Name', 'Component name'),
+            $fielder->checkbox('Component_Visibility', 'Visibility')
         ]);
 
         // $fields->removeByName('Root_Main');
@@ -54,12 +57,12 @@ class HTMLSnippet extends DataObject
         // );
 
         if (!$this->ID) {
-            $fields->removeByName('Main');
+            $fielder->remove('Main');
+
+            $fielder->required('ClassName');
 
             $classes = ClassInfo::getValidSubClasses($this->ClassName);
             $list = array_fill_keys($classes, '');
-
-            $list[] = '-';
 
             foreach ($classes as $class) {
                 $list[$class] = Str::of(class_basename($class))->headline();
@@ -67,14 +70,13 @@ class HTMLSnippet extends DataObject
 
             unset($list[$this->ClassName]);
 
-            $fields->insertAfter(
-                'Component_Name',
-                DropdownField::create(
-                    'ClassName',
-                    'Component type',
-                    array_reverse($list),
-                ),
-            );
+            if (empty($list)) {
+                $fielder->addError('You need to create and register snippet first, please run <strong>php taz make:html-snippet</strong>', 'warning');
+            } else {
+                $fielder->insertAfter(
+                    'Component_Name', $fielder->dropdown('ClassName', 'Component type', array_reverse($list))
+                );
+            }
         }
 
         if ($this->ID) {
