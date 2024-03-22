@@ -127,6 +127,8 @@ class HTMLSnippet extends DataObject
         //     }
         // }
 
+        $this->extend('updateCMSFields', $fields);
+
         return $fields;
     }
 
